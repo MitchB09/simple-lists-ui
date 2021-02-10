@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import './App.css';
+import { Box, Typography } from '@material-ui/core';
+import SimpleListTable from './components/SimpleListTable';
 
 function App() {
+  const [darkState, setDarkState] = useState(true);
+  const palletType = darkState ? 'dark' : 'light';
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: palletType,
+    },
+  });
+
+  const handleThemeChange = () => {
+    setDarkState(!darkState);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Box component="div" m={1} className="App">
+        <header className="App-header">
+          Simple Lists
+          <Switch checked={darkState} onChange={handleThemeChange} />
+        </header>
+        <Box component="div" m={1} className="App-content">
+          <SimpleListTable />
+        </Box>
+        <Box component="div" m={1} className="App-footer">
+          <Typography variant="subtitle2">Footer</Typography>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }
 

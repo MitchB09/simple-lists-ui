@@ -1,0 +1,15 @@
+.detailPane {
+	padding: 2vw 4vw;
+	margin: 1em 1em;
+}
+
+.detailButtons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+  justify-content: flex-start;
+}
+
+.detailButton {
+	margin: 0 2em;
+}
