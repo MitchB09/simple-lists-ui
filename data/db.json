@@ -1,0 +1,30 @@
+{
+	"lists" : [
+		{
+			"listDescription": "Test New",
+			"listName": "New list",
+			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+			"type": "RandomList"
+		},
+		{
+			"listDescription": "Example Todo List",
+			"listName": "Todo List Test",
+			"items": [
+				{
+					"value": "Item 1",
+					"id": "bda923a0-48ae-11eb-a274-db424178d82c"
+				},
+				{
+					"value": "Item 2",
+					"id": "c04b6cd0-48ae-11eb-a274-db424178d82c"
+				},
+				{
+					"value": "Item 4",
+					"id": "c35689f0-48ae-11eb-a274-db424178d82c"
+				}
+			],
+			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+			"type": "TodoList"
+		}
+	]
+}

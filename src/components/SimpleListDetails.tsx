@@ -1,25 +1,20 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import styles from './SimpleListDetails.module.css';
+import TodoListPane from './TodoListPane';
+import { List } from '../types';
 
-function SimpleListTable() {
+interface SimpleListDetailsProps {
+  list: List;
+}
+
+function SimpleListDetails(props: SimpleListDetailsProps) {
+  const { list } = props;
   return (
-    <Paper className={styles.detailPane}>
-      <div className={styles.detailButtons}>
-        <Button className={styles.detailButton}>
-          <Typography variant="h6">Item 1</Typography>
-        </Button>
-        <Button className={styles.detailButton}>
-          <Typography variant="h6">Item 2</Typography>
-        </Button>
-        <Button className={styles.detailButton}>
-          <Typography variant="h6">Item 3</Typography>
-        </Button>
-      </div>
-    </Paper>
+    <Box className={styles.detailPane}>
+      <TodoListPane list={list} />
+    </Box>
   );
 }
 
-export default SimpleListTable;
+export default SimpleListDetails;

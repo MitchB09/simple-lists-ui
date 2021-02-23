@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import './App.css';
-import { Box, Typography } from '@material-ui/core';
+import { Box, CssBaseline } from '@material-ui/core';
 import SimpleListTable from './components/SimpleListTable';
+import SimpleListsHeader from './components/SimpleListsHeader';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
@@ -11,6 +11,12 @@ function App() {
   const darkTheme = createMuiTheme({
     palette: {
       type: palletType,
+      primary: {
+        main: '#14A763',
+      },
+      secondary: {
+        main: '#FFE400',
+      },
     },
   });
 
@@ -18,20 +24,19 @@ function App() {
     setDarkState(!darkState);
   };
   return (
-    <ThemeProvider theme={darkTheme}>
+    <MuiThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <Box component="div" m={1} className="App">
-        <header className="App-header">
-          Simple Lists
-          <Switch checked={darkState} onChange={handleThemeChange} />
-        </header>
+        <SimpleListsHeader
+          className="App-header"
+          darkState={darkState}
+          handleThemeChange={handleThemeChange}
+        />
         <Box component="div" m={1} className="App-content">
           <SimpleListTable />
         </Box>
-        <Box component="div" m={1} className="App-footer">
-          <Typography variant="subtitle2">Footer</Typography>
-        </Box>
       </Box>
-    </ThemeProvider>
+    </MuiThemeProvider>
   );
 }
 
