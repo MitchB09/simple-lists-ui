@@ -1,39 +1,105 @@
 {
-	"lists" : [
-		{
-			"id": 1,
-			"listDescription": "Test New",
-			"listName": "New list",
-			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
-			"type": "RandomList"
-		},
-		{
-			"id": 2,
-			"listDescription": "Example Todo List",
-			"listName": "Todo List Test",
-			"items": [
-				{
-					"value": "Item 1",
-					"id": "bda923a0-48ae-11eb-a274-db424178d82c"
-				},
-				{
-					"value": "Item 2",
-					"id": "c04b6cd0-48ae-11eb-a274-db424178d82c"
-				},
-				{
-					"value": "Item 4",
-					"id": "c35689f0-48ae-11eb-a274-db424178d82c"
-				}
-			],
-			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
-			"type": "TodoList"
-		},
-		{
-			"id": 3,
-			"listDescription": "The Third One",
-			"listName": "Number Three",
-			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
-			"type": "RandomList"
-		}
-	]
+  "lists": [
+    {
+      "id": 1,
+      "description": "Test New",
+      "name": "New list",
+      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "type": "RandomList"
+    },
+    {
+      "id": 2,
+      "description": "Example Todo List",
+      "name": "Todo List Test",
+      "items": [
+        {
+          "value": "Item 1",
+          "id": "bda923a0-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "Item 2",
+          "id": "c04b6cd0-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "Item 4",
+          "id": "c35689f0-48ae-11eb-a274-db424178d82c"
+        }
+      ],
+      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "type": "TodoList"
+    },
+    {
+      "id": 3,
+      "description": "Keep off the Covid-19lbs",
+      "name": "Quick Workout",
+      "items": [
+        {
+          "value": "5 Pushups",
+          "id": "bda923a0-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "10 Pushups",
+          "id": "c04b6cd0-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "5 Chin Ups",
+          "id": "c35689f0-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "5 Pull Ups",
+          "id": "bda923a0-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "10 Body Squats",
+          "id": "c04b6cd0-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "Drink Some Water!",
+          "id": "c35689f0-48ae-11eb-a274-db424178d82c"
+        }
+      ],
+      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "type": "RandomList"
+    },
+    {
+      "id": 4,
+      "description": "The Third One",
+      "name": "Number Three",
+      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "type": "RandomList"
+    },
+    {
+      "id": 5,
+      "name": "Where's Lunch?",
+      "description": "Friday Version",
+      "items": [
+        {
+          "value": "Snooty Fox",
+          "id": "10000000-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "Lunar Rogue",
+          "id": "10000001-48ae-11eb-a274-db424178d82c"
+        },
+        {
+          "value": "The Joyce",
+          "id": "10000002-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "Gahan House",
+          "id": "10000003-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "St. Louis",
+          "id": "10000004-48ae-11eb-a274-db424178d82d"
+        },
+        {
+          "value": "Crispins' Butter Chicken",
+          "id": "10000005-48ae-11eb-a274-db424178d82c"
+        }
+      ],
+      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "type": "RandomList"
+    }
+  ]
 }

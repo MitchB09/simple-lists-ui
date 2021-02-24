@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'http://192.168.2.16:3001/',
   timeout: 5000,
   headers: { 'X-Custom-Header': 'foobar' },
 });

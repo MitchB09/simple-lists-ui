@@ -31,8 +31,10 @@ function Row(props: RowProps) {
         id="panel1bh-header"
       >
         <Typography>
-          <Box component="span">{list.listName}</Box>
-          <Box component="span" fontStyle="oblique">{list.listDescription}</Box>
+          <Box component="span">{list.name}</Box>
+          <Box component="span" fontStyle="oblique" style={{ padding: '0px 1rem' }}>
+            {list.description}
+          </Box>
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -43,7 +45,6 @@ function Row(props: RowProps) {
 }
 
 export default function SimpleListTable() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [lists, setLists] = useState<List[]>([]);
   const [expanded, setExpanded] = useState<string>('');
 
@@ -53,9 +54,9 @@ export default function SimpleListTable() {
       .then((response) => {
         setLists(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
       .then(() => {
         // always executed
       });
@@ -63,16 +64,16 @@ export default function SimpleListTable() {
   }, []);
 
   const handleChange = (list: string) => {
-    setExpanded(list);
+    setExpanded(list === expanded ? '' : list);
   };
   return (
     <Paper>
       {lists.map((row) => (
         <Row
-          key={row.listName}
+          key={row.name}
           list={row}
-          expanded={expanded === row.listName}
-          setExpanded={() => handleChange(row.listName)}
+          expanded={expanded === row.name}
+          setExpanded={() => handleChange(row.name)}
         />
       ))}
     </Paper>

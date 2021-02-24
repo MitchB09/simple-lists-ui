@@ -1,6 +1,7 @@
 export interface List {
-  listName: string;
-  listDescription: string;
+  id: number;
+  name: string;
+  description: string;
   type: string;
   items?: ListItem[];
 }
