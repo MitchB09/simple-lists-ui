@@ -1,23 +1,14 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Box from '@material-ui/core/Box';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SimpleListDetails from './SimpleListDetails';
 import { List } from '../types';
-
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
-
-
+import api from '../api';
 
 interface RowProps {
   list: List;
@@ -28,21 +19,21 @@ interface RowProps {
 function Row(props: RowProps) {
   const { list, expanded, setExpanded } = props;
 
-  const classes = useRowStyles();
-
   const onChange = () => {
     setExpanded();
   };
 
   return (
-    <Accordion className={classes.root} expanded={expanded} onChange={onChange}>
+    <Accordion expanded={expanded} onChange={onChange}>
       <AccordionSummary
         expandIcon={<ExpandMore />}
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
-        <Typography>{list.listName}</Typography>
-        <Typography>{list.listDescription}</Typography>
+        <Typography>
+          <Box component="span">{list.listName}</Box>
+          <Box component="span" fontStyle="oblique">{list.listDescription}</Box>
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <SimpleListDetails list={list} />
@@ -52,36 +43,24 @@ function Row(props: RowProps) {
 }
 
 export default function SimpleListTable() {
-
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lists, setLists] = React.useState<List[]>([
-    {
-      listDescription: 'Test New',
-      listName: 'New list',
-      type: 'RandomList',
-    },
-    {
-      listDescription: 'Example Todo List',
-      listName: 'Todo List Test',
-      items: [
-        {
-          value: 'Item 1',
-          id: 'bda923a0-48ae-11eb-a274-db424178d82c',
-        },
-        {
-          value: 'Item 2',
-          id: 'c04b6cd0-48ae-11eb-a274-db424178d82c',
-        },
-        {
-          value: 'Item 4',
-          id: 'c35689f0-48ae-11eb-a274-db424178d82c',
-        },
-      ],
-      type: 'TodoList',
-    },
-  ]);
-  const [expanded, setExpanded] = React.useState<string>('');
+  const [lists, setLists] = useState<List[]>([]);
+  const [expanded, setExpanded] = useState<string>('');
+
+  useEffect(() => {
+    api
+      .get<List[]>('/lists')
+      .then((response) => {
+        setLists(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then(() => {
+        // always executed
+      });
+    return () => {};
+  }, []);
 
   const handleChange = (list: string) => {
     setExpanded(list);
@@ -89,7 +68,12 @@ export default function SimpleListTable() {
   return (
     <Paper>
       {lists.map((row) => (
-        <Row key={row.listName} list={row} expanded={expanded === row.listName} setExpanded={() => handleChange(row.listName)} />
+        <Row
+          key={row.listName}
+          list={row}
+          expanded={expanded === row.listName}
+          setExpanded={() => handleChange(row.listName)}
+        />
       ))}
     </Paper>
   );

@@ -27,6 +27,13 @@
 			],
 			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
 			"type": "TodoList"
+		},
+		{
+			"id": 3,
+			"listDescription": "The Third One",
+			"listName": "Number Three",
+			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+			"type": "RandomList"
 		}
 	]
 }

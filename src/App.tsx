@@ -4,7 +4,7 @@ import './App.css';
 import { Box, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SimpleListTable from './components/SimpleListTable';
-import SimpleListsHeader from './components/SimpleListsHeader';
+import SimpleListsHeader from './components/Header/SimpleListsHeader';
 import RandomItem from './components/RandomItem/RandomItem';
 
 function App() {
