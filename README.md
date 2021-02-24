@@ -1,3 +1,12 @@
+# Simple Lists UI
+
+## Running Project
+  1. Start api with `npm run api` _//TODO run in parallel with npm start_
+  1. run app with `npm start`
+
+Using sample data in the meantime, will hook up with AWS api eventually
+
+# Template README starts here
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
