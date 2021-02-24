@@ -1,12 +1,14 @@
 {
 	"lists" : [
 		{
+			"id": 1,
 			"listDescription": "Test New",
 			"listName": "New list",
 			"userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
 			"type": "RandomList"
 		},
 		{
+			"id": 2,
 			"listDescription": "Example Todo List",
 			"listName": "Todo List Test",
 			"items": [
