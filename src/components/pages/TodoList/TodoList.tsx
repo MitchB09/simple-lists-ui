@@ -1,29 +1,26 @@
 import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Check from '@material-ui/icons/Check';
-import Close from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
-import { List, ListItem, TodoItem } from '../../../types';
+import { List, TodoItem } from '../../../types';
 import styles from './TodoList.module.css';
 
 interface TodoItemProps {
-  item: ListItem;
+  item: TodoItem;
+  onComplete: () => void;
   onDelete: () => void;
 }
 
 const TodoListItem = (props: TodoItemProps) => {
-  const { item, onDelete } = props;
-  const [complete, setComplete] = useState<boolean>(false);
+  const { item, onComplete, onDelete } = props;
 
   const button = {
     minWidth: '20em',
-    justifyContent: 'space-between',
-    backgroundColor: '#333333',
-    border: '2px solid black',
   };
+
+  console.dir(onDelete);
 
   const completed = {
     ...button,
@@ -31,16 +28,21 @@ const TodoListItem = (props: TodoItemProps) => {
   };
 
   return (
-    <Button
-      onClick={() => {
-        setComplete(true);
-      }}
-      className={styles.itemContainer}
-      style={complete ? completed : button}
-    >
-      <Box style={{ justifyContent: 'space-between' }}>{item.value}</Box>
-      {complete ? <Close onClick={onDelete} /> : <Check />}
-    </Button>
+    <>
+      <FormControlLabel
+        control={(
+          <Checkbox
+            checked={item.complete}
+            onClick={onComplete}
+            color="primary"
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        )}
+        label="Primary"
+        className={styles.itemContainer}
+        style={item.complete ? completed : button}
+      />
+    </>
   );
 };
 
@@ -56,24 +58,32 @@ const TodoList = (props: ListProps) => {
     setTodoList(list.items as TodoItem[]);
   }, [list]);
 
+  const onComplete = (item: TodoItem) => {
+    console.dir('onComplete', item);
+  };
+
   return (
     <Paper style={{ minHeight: '60vh' }}>
-      <div>
-        <Typography variant="h6">{list?.name}</Typography>
-        <Grid container spacing={1} direction="column" justify="center" alignItems="center">
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Paper color="primary" style={{ minWidth: '50vw', backgroundColor: '#303030', marginTop: '1em' }}>
+          <Typography variant="h6">{list?.name}</Typography>
+
           {todoList.map((item) => (
             <Grid item>
               <TodoListItem
                 key={item.id}
                 item={item}
+                onComplete={() => {
+                  onComplete(item);
+                }}
                 onDelete={() => {
                   console.dir(item);
                 }}
               />
             </Grid>
           ))}
-        </Grid>
-      </div>
+        </Paper>
+      </Grid>
     </Paper>
   );
 };
