@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import SimpleListDetails from './SimpleListDetails';
+import SimpleListDetails from './panes/SimpleListDetails';
 import { List } from '../types';
 import api from '../api';
 

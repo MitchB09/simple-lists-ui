@@ -59,7 +59,7 @@
         }
       ],
       "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
-      "type": "RandomList"
+      "type": "TimedRandomList"
     },
     {
       "id": 4,

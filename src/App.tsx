@@ -5,7 +5,9 @@ import { Box, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SimpleListTable from './components/SimpleListTable';
 import SimpleListsHeader from './components/Header/SimpleListsHeader';
-import RandomItem from './components/RandomItem/RandomItem';
+import ListPage from './components/pages/ListPage';
+import RandomPage from './components/pages/RandomPage';
+
 
 function App() {
   const [darkState, setDarkState] = useState(true);
@@ -37,10 +39,9 @@ function App() {
           />
           <Box component="div" m={1} className="App-content">
             <Switch>
-              <Route path="/:id/random" component={RandomItem} />
-              <Route path="/">
-                <SimpleListTable />
-              </Route>
+              <Route path="/:id/random" component={RandomPage} />
+              <Route path="/:id" component={ListPage} />
+              <Route path="/" component={SimpleListTable} />
             </Switch>
           </Box>
         </Box>

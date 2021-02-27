@@ -1,0 +1,12 @@
+.timer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+  flex-wrap: wrap;
+  min-height: 60px;
+}
+
+.reset {
+  padding: 4px;
+}
