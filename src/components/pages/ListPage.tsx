@@ -14,6 +14,7 @@ interface RouteInfo {
 
 export interface ListPageProps {
   list: List;
+  updateList: () => void;
 }
 
 function ListPage() {
@@ -34,6 +35,22 @@ function ListPage() {
       });
     return () => {};
   }, [id]);
+
+  const updateList = (updatedList: List) => {
+    api
+      .post<List>(`/lists/${id}`, updatedList)
+      .then((response) => {
+        const { data } = response;
+        setList(data);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.dir(error);
+        // TODO snackbar
+      });
+  };
+
+
   if (!list) {
     return (<>loading...</>);
   }
@@ -41,7 +58,7 @@ function ListPage() {
     case 'TodoList':
       return (
         <Box className={styles.detailPane}>
-          <TodoList list={list} />
+          <TodoList list={list} updateList={updateList} />
         </Box>
       );
     case 'TimedRandomList':

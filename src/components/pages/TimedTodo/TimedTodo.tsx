@@ -7,9 +7,8 @@ import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v1 as uuidv1 } from 'uuid';
-import { ListItem, RandomTimedItem } from '../../../types';
+import { ListItem, RandomPageProps, RandomTimedItem } from '../../../types';
 import Timer from '../../Timer/Timer';
-import { ListPageProps } from '../ListPage';
 import styles from './TimedTodo.module.css';
 
 interface CompletableItemProps {
@@ -49,7 +48,7 @@ const CompletableItem = (props: CompletableItemProps) => {
   );
 };
 
-const TimedTodo = (props: ListPageProps) => {
+const TimedTodo = (props: RandomPageProps) => {
   const { list } = props;
   const [randomItem, setRandomItem] = useState<RandomTimedItem[]>([]);
 

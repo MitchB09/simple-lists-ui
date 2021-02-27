@@ -19,3 +19,11 @@ export interface TodoItem extends ListItem {
   complete: boolean;
 }
 
+export interface ListProps {
+  list: List;
+  updateList: (list: List) => void;
+}
+
+export interface RandomPageProps {
+  list: List;
+}

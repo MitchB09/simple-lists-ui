@@ -2,9 +2,9 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { ListPageProps } from '../ListPage';
+import { RandomPageProps } from '../../../types';
 
-const RandomItem = (props: ListPageProps) => {
+const RandomItem = (props: RandomPageProps) => {
   const { list } = props;
   const [randomItem, setRandomItem] = useState<string>();
 
