@@ -13,6 +13,8 @@ export interface ListItem {
 
 export interface RandomTimedItem extends ListItem {
   randomId: string;
+  miss: boolean;
+  complete: boolean;
 }
 
 export interface TodoItem extends ListItem {

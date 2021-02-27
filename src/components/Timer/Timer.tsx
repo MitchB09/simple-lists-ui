@@ -16,6 +16,7 @@ function Timer(props: TimerProps) {
   useEffect(() => {
     if (timeLeft === 0) {
       onComplete();
+      // setTimeLeft(seconds);
     }
 
     // exit early when we reach 0

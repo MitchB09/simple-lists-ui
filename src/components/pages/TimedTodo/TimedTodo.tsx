@@ -7,24 +7,28 @@ import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v1 as uuidv1 } from 'uuid';
-import { ListItem, RandomPageProps, RandomTimedItem } from '../../../types';
+import { RandomPageProps, RandomTimedItem } from '../../../types';
 import Timer from '../../Timer/Timer';
 import styles from './TimedTodo.module.css';
 
 interface CompletableItemProps {
-  item: ListItem;
+  item: RandomTimedItem;
   onDelete: () => void;
+  onEnd: () => void;
 }
 
 const CompletableItem = (props: CompletableItemProps) => {
-  const { item, onDelete } = props;
+  const { item, onDelete, onEnd } = props;
   const [complete, setComplete] = useState<boolean>(false);
+  const [miss, setMiss] = useState<boolean>(false);
+  const [timer, setTimer] = useState<number>(5 * 60);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const button = {
     minWidth: '20em',
     justifyContent: 'space-between',
     backgroundColor: '#333333',
-    border: '2px solid black',
+    border: '2px solid #042415',
   };
 
   const completed = {
@@ -33,18 +37,34 @@ const CompletableItem = (props: CompletableItemProps) => {
     cursor: 'default',
   };
 
+  const missed = {
+    ...button,
+    backgroundColor: '#A91428',
+    cursor: 'default',
+  };
+
   return (
-    <Button
-      onClick={
-        complete
-          ? onDelete : () => { setComplete(true); }
-      }
-      className={styles.itemContainer}
-      style={complete ? completed : button}
-    >
-      <Box style={{ justifyContent: 'space-between' }}>{item.value}</Box>
-      {complete ? <Close /> : <Check />}
-    </Button>
+    <span>
+      <Button
+        onClick={
+          complete
+            ? onDelete : () => { setComplete(true); setTimer(0); }
+        }
+        className={styles.itemContainer}
+        // eslint-disable-next-line no-nested-ternary
+        style={complete ? completed : miss ? missed : button}
+      >
+        <Box style={{ justifyContent: 'space-between' }}>{item.value}</Box>
+        {item.complete ? <Close /> : <Check />}
+      </Button>
+      <Timer
+        seconds={timer}
+        onComplete={() => {
+          onEnd();
+          setMiss(true);
+        }}
+      />
+    </span>
   );
 };
 
@@ -55,7 +75,10 @@ const TimedTodo = (props: RandomPageProps) => {
   const getRandom = () => {
     if (list?.items) {
       const item = list?.items[Math.floor(Math.random() * list.items.length)];
-      setRandomItem((prevState) => [...prevState, { randomId: uuidv1(), ...item }]);
+      setRandomItem((prevState) => [
+        ...prevState,
+        { randomId: uuidv1(), miss: false, complete: false, ...item },
+      ]);
     }
   };
 
@@ -66,7 +89,10 @@ const TimedTodo = (props: RandomPageProps) => {
   useEffect(() => {
     if (list?.items) {
       const item = list.items[Math.floor(Math.random() * list.items.length)];
-      setRandomItem((prevState) => [...prevState, { randomId: uuidv1(), ...item }]);
+      setRandomItem((prevState) => [
+        ...prevState,
+        { randomId: uuidv1(), miss: false, complete: false, ...item },
+      ]);
     }
   }, [list]);
 
@@ -82,12 +108,14 @@ const TimedTodo = (props: RandomPageProps) => {
               onDelete={() => {
                 deleteItem(item.randomId);
               }}
+              onEnd={() => {
+                getRandom();
+              }}
             />
           </Grid>
         ))}
         <Grid>
           <Button onClick={getRandom}>Get Another</Button>
-          <Timer seconds={5 * 60} onComplete={getRandom} />
         </Grid>
       </Grid>
     </Paper>
