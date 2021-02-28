@@ -7,7 +7,7 @@ import SimpleListTable from './components/SimpleListTable';
 import SimpleListsHeader from './components/Header/SimpleListsHeader';
 import ListPage from './components/pages/ListPage';
 import RandomPage from './components/pages/RandomPage';
-
+import LoginPage from './components/pages/LoginPage';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
@@ -39,8 +39,9 @@ function App() {
           />
           <Box component="div" m={1} className="App-content">
             <Switch>
-              <Route path="/:id/random" component={RandomPage} />
+              <Route path="/login" component={LoginPage} />
               <Route path="/:id" component={ListPage} />
+              <Route path="/:id/random" component={RandomPage} />
               <Route path="/" component={SimpleListTable} />
             </Switch>
           </Box>

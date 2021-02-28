@@ -9,8 +9,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import AccountCircleOutlined from '@material-ui/icons/AccountCircleOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
+import { useUser } from '../Auth/hooks';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,44 +56,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function PrimarySearchAppBar(props: any) {
   const { darkState, handleThemeChange } = props;
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const user = useUser();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -104,33 +80,44 @@ export default function PrimarySearchAppBar(props: any) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <HomeIcon />
+      {user ? (
+        <MenuItem component={Link} to="/profile">
+          <IconButton color="inherit">
+            <AccountCircle />
           </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      ) : (
+        <MenuItem component={Link} to="/login">
+          <IconButton color="inherit">
+            <AccountCircleOutlined />
+          </IconButton>
+          <Typography
+            className={classes.title}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            // variant="h6"
+            noWrap
+          >
+            Login
+          </Typography>
+        </MenuItem>
+      )}
+      <MenuItem component={Link} to="/">
+        <IconButton color="inherit">
+          <HomeIcon />
+        </IconButton>
+        <Typography
+          className={classes.title}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+          // variant="h6"
+          noWrap
+        >
           Home
-        </Link>
+        </Typography>
       </MenuItem>
       <MenuItem>
         <Switch checked={darkState} onChange={handleThemeChange} />
         <p>Dark Mode</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -152,16 +139,22 @@ export default function PrimarySearchAppBar(props: any) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Switch checked={darkState} onChange={handleThemeChange} />
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {user ? (
+              <IconButton edge="end" color="inherit" component={Link} to="/profile">
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <Typography
+                component={Link}
+                to="/login"
+                className={classes.title}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+                variant="h6"
+                noWrap
+              >
+                Login
+              </Typography>
+            )}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -177,7 +170,6 @@ export default function PrimarySearchAppBar(props: any) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }

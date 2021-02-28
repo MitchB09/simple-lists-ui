@@ -142,7 +142,7 @@ const TodoList = (props: ListProps) => {
                   toggleComplete(item);
                 }}
                 onDelete={() => {
-                  console.dir(item);
+                  // console.dir(item);
                 }}
               />
             </Grid>

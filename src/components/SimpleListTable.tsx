@@ -48,6 +48,9 @@ export default function SimpleListTable() {
   const [lists, setLists] = useState<List[]>([]);
   const [expanded, setExpanded] = useState<string>('');
 
+  // useContext(AuthContext).signIn({ email: 'email', password: 'password' });
+  // eslint-disable-next-line no-console
+
   useEffect(() => {
     api
       .get<List[]>('/lists')
