@@ -31,7 +31,7 @@ function ListPage() {
     return () => {};
   }, [id]);
   if (!list) {
-    return (<>loading...</>);
+    return <>loading...</>;
   }
   switch (list.type) {
     case 'RandomList':

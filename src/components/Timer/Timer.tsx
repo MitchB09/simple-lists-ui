@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import RestoreIcon from '@material-ui/icons/Restore';
-import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import css from './Timer.module.css';
 
 interface TimerProps {
   seconds: number;
+  paused: boolean;
   onComplete: () => void;
 }
 
 function Timer(props: TimerProps) {
-  const { seconds, onComplete } = props;
+  const { seconds, paused, onComplete } = props;
   const [timeLeft, setTimeLeft] = useState<number>(seconds);
 
   useEffect(() => {
-    if (timeLeft === 0) {
+    if (seconds && timeLeft === 0) {
       onComplete();
       // setTimeLeft(seconds);
     }
 
     // exit early when we reach 0
-    if (!timeLeft) return;
+    if (paused || !timeLeft) return;
 
     // save intervalId to clear the interval when the
     // component re-renders
@@ -35,17 +35,18 @@ function Timer(props: TimerProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
+  const displayime = () => `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:
+    ${String(timeLeft % 60).padStart(2, '0')}`;
+
   return (
-    <Box m={1} className={css.timer}>
-      <div style={{ padding: '4px' }}>
-        {String(Math.floor(timeLeft / 60)).padStart(2, '0')}
-        :
-        {String(timeLeft % 60).padStart(2, '0')}
-      </div>
-      <IconButton onClick={() => setTimeLeft(seconds)} style={{ padding: '4px' }}>
-        <RestoreIcon />
-      </IconButton>
-    </Box>
+    <>
+      <span className={css.timer} style={{ margin: '4px' }}>
+        {displayime()}
+        <IconButton onClick={() => setTimeLeft(seconds)} style={{ padding: '4px' }}>
+          <RestoreIcon />
+        </IconButton>
+      </span>
+    </>
   );
 }
 

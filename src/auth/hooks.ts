@@ -20,7 +20,8 @@ export function useAuth() {
     const check = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser();
-        if (active) setUser(currentUser);
+        // const jwt = await (await Auth.currentSession()).getIdToken().getJwtToken();
+        setUser(currentUser);
       } catch (error) {
         if (active) setUser(null);
       }
@@ -63,6 +64,12 @@ export function useUser() {
   // See https://github.com/aws-amplify/amplify-js/issues/4927
   // @ts-ignore
   return user.attributes;
+}
+
+export function useJwtToken() {
+  return async function getJwtToken() {
+    await (await Auth.currentSession()).getIdToken().getJwtToken();
+  };
 }
 
 export function useSignIn() {

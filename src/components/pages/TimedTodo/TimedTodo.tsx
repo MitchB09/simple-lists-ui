@@ -21,8 +21,6 @@ const CompletableItem = (props: CompletableItemProps) => {
   const { item, onDelete, onEnd } = props;
   const [complete, setComplete] = useState<boolean>(false);
   const [miss, setMiss] = useState<boolean>(false);
-  const [timer, setTimer] = useState<number>(5 * 60);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const button = {
     minWidth: '20em',
@@ -43,22 +41,25 @@ const CompletableItem = (props: CompletableItemProps) => {
     cursor: 'default',
   };
 
+  const onComplete = () => {
+    setComplete(true);
+  };
+
+  const totalTime = 5 * 60;
+
   return (
-    <span>
+    <span className={styles.itemContainer}>
       <Button
-        onClick={
-          complete
-            ? onDelete : () => { setComplete(true); setTimer(0); }
-        }
-        className={styles.itemContainer}
+        onClick={complete ? onDelete : onComplete}
         // eslint-disable-next-line no-nested-ternary
         style={complete ? completed : miss ? missed : button}
       >
         <Box style={{ justifyContent: 'space-between' }}>{item.value}</Box>
-        {item.complete ? <Close /> : <Check />}
+        {complete ? <Close /> : <Check />}
       </Button>
       <Timer
-        seconds={timer}
+        seconds={totalTime}
+        paused={complete}
         onComplete={() => {
           onEnd();
           setMiss(true);
@@ -101,9 +102,8 @@ const TimedTodo = (props: RandomPageProps) => {
       <Typography variant="h6">{list?.name}</Typography>
       <Grid container spacing={1} direction="column" justify="center" alignItems="center">
         {randomItem.map((item) => (
-          <Grid item>
+          <Grid item key={item.randomId}>
             <CompletableItem
-              key={item.randomId}
               item={item}
               onDelete={() => {
                 deleteItem(item.randomId);

@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import styles from './ListPage.module.css';
 // import TodoListPane from './TimedTodo/RandomItem';
 import api from '../../api';
-import TodoListPane from '../panes/TodoListPane';
 import { List } from '../../types';
 import TodoList from './TodoList/TodoList';
+import TimedTodo from './TimedTodo/TimedTodo';
 
 interface RouteInfo {
   id: string;
@@ -50,9 +50,8 @@ function ListPage() {
       });
   };
 
-
   if (!list) {
-    return (<>loading...</>);
+    return <>loading...</>;
   }
   switch (list.type) {
     case 'TodoList':
@@ -64,7 +63,7 @@ function ListPage() {
     case 'TimedRandomList':
       return (
         <Box className={styles.detailPane}>
-          <TodoListPane list={list} />
+          <TimedTodo list={list} />
         </Box>
       );
     default:

@@ -1,8 +1,8 @@
 import { TextField, Paper, Button, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSignIn } from '../Auth/hooks';
-import { SignInInput } from '../Auth/types';
+import { useSignIn } from '../../auth/hooks';
+import { SignInInput } from '../../auth/types';
 
 function LoginPage() {
   const signIn = useSignIn();
@@ -55,6 +55,7 @@ function LoginPage() {
             </Grid>
             <Grid item>
               <TextField
+                required
                 name="password"
                 label="Password"
                 type="password"

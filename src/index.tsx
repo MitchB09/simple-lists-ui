@@ -8,7 +8,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import messages_de from './messages/de.json';
 import messages_en from './messages/en.json';
-import AuthProvider from './components/Auth/provider';
+import AuthProvider from './auth/provider';
 
 Amplify.configure({
   Auth: {
@@ -28,13 +28,11 @@ const language: string = navigator.language.split(/[-_]/)[0]; // language withou
 const messageList: Record<string, string> = messages.en;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <IntlProvider locale={language} messages={messageList}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </IntlProvider>
-  </React.StrictMode>,
+  <IntlProvider locale={language} messages={messageList}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </IntlProvider>,
   document.getElementById('root'),
 );
 
