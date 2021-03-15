@@ -58,7 +58,6 @@ export default function PrimarySearchAppBar(props: any) {
   const classes = useStyles();
   const user = useUser();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-  console.dir(user);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
@@ -81,14 +80,14 @@ export default function PrimarySearchAppBar(props: any) {
       onClose={handleMobileMenuClose}
     >
       {user ? (
-        <MenuItem component={Link} to="/profile">
+        <MenuItem onClick={handleMobileMenuClose} component={Link} to="/profile">
           <IconButton color="inherit">
             <AccountCircle />
           </IconButton>
           <p>Profile</p>
         </MenuItem>
       ) : (
-        <MenuItem component={Link} to="/login">
+        <MenuItem onClick={handleMobileMenuClose} component={Link} to="/login">
           <IconButton color="inherit">
             <AccountCircleOutlined />
           </IconButton>
@@ -102,7 +101,7 @@ export default function PrimarySearchAppBar(props: any) {
           </Typography>
         </MenuItem>
       )}
-      <MenuItem component={Link} to="/">
+      <MenuItem onClick={handleMobileMenuClose} component={Link} to="/">
         <IconButton color="inherit">
           <HomeIcon />
         </IconButton>

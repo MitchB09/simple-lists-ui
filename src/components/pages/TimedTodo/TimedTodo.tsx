@@ -13,19 +13,20 @@ import styles from './TimedTodo.module.css';
 
 interface CompletableItemProps {
   item: RandomTimedItem;
+  totalTime: number;
   onDelete: () => void;
   onEnd: () => void;
 }
 
 const CompletableItem = (props: CompletableItemProps) => {
-  const { item, onDelete, onEnd } = props;
+  const { item, totalTime, onDelete, onEnd } = props;
   const [complete, setComplete] = useState<boolean>(false);
   const [miss, setMiss] = useState<boolean>(false);
 
   const button = {
     minWidth: '20em',
     justifyContent: 'space-between',
-    backgroundColor: '#333333',
+    // backgroundColor: '#333333',
     border: '2px solid #042415',
   };
 
@@ -44,9 +45,6 @@ const CompletableItem = (props: CompletableItemProps) => {
   const onComplete = () => {
     setComplete(true);
   };
-
-  const totalTime = 5 * 60;
-
   return (
     <span className={styles.itemContainer}>
       <Button
@@ -71,6 +69,8 @@ const CompletableItem = (props: CompletableItemProps) => {
 
 const TimedTodo = (props: RandomPageProps) => {
   const { list } = props;
+  const [timerMinutes, setTimerMinutes] = useState<number>(5);
+  const [started, setStarted] = useState<boolean>(false);
   const [randomItem, setRandomItem] = useState<RandomTimedItem[]>([]);
 
   const getRandom = () => {
@@ -101,21 +101,58 @@ const TimedTodo = (props: RandomPageProps) => {
     <Paper style={{ minHeight: '60vh' }}>
       <Typography variant="h6">{list?.name}</Typography>
       <Grid container spacing={1} direction="column" justify="center" alignItems="center">
-        {randomItem.map((item) => (
-          <Grid item key={item.randomId}>
-            <CompletableItem
-              item={item}
-              onDelete={() => {
-                deleteItem(item.randomId);
+        {started ? (
+          randomItem.map((item) => (
+            <Grid item key={item.randomId}>
+              <CompletableItem
+                item={item}
+                totalTime={timerMinutes * 60}
+                onDelete={() => {
+                  deleteItem(item.randomId);
+                }}
+                onEnd={() => {
+                  getRandom();
+                }}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Grid item>
+            <Button
+              onClick={() => {
+                setStarted(true);
               }}
-              onEnd={() => {
-                getRandom();
-              }}
-            />
+            >
+              Start
+            </Button>
           </Grid>
-        ))}
-        <Grid>
-          <Button onClick={getRandom}>Get Another</Button>
+        )}
+        <Grid item>
+          <Button
+            onClick={() => {
+              getRandom();
+            }}
+          >
+            Get Another
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            onClick={() => {
+              setTimerMinutes(5);
+            }}
+          >
+            5 Minutes
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            onClick={() => {
+              setTimerMinutes(30);
+            }}
+          >
+            30 Minutes
+          </Button>
         </Grid>
       </Grid>
     </Paper>

@@ -7,6 +7,12 @@ export type SignUpInput = {
   email: string;
   password: string;
 };
+
+export interface ProfileAttributes {
+  email: string;
+  name?: string;
+  family_name?: string;
+}
 export type ConfirmSignUpInput = {
   email: string;
   code: string;

@@ -46,6 +46,16 @@ export function useAuth() {
     setUser(null);
   }, [setUser]);
 
+  const updateUser = React.useCallback(
+    async (attributes) => {
+      user?.updateAttributes(attributes, (error?: Error) => {
+        if (error) throw error;
+        setUser(null);
+      });
+    },
+    [user, setUser],
+  );
+
   const deleteUser = React.useCallback(async () => {
     user?.deleteUser((error?: Error) => {
       if (error) throw error;
@@ -54,7 +64,7 @@ export function useAuth() {
     });
   }, [user, setUser]);
 
-  return { user, signIn, signOut, deleteUser };
+  return { user, signIn, signOut, updateUser, deleteUser };
 }
 
 export function useUser() {
@@ -78,6 +88,10 @@ export function useSignIn() {
 
 export function useSignOut() {
   return React.useContext(AuthContext).signOut;
+}
+
+export function useUpdateUser() {
+  return React.useContext(AuthContext).updateUser;
 }
 
 export function useSignUp() {

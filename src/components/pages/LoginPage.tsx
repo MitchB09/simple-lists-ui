@@ -9,7 +9,6 @@ function LoginPage() {
   const history = useHistory();
   const [signInInput, setSignInInput] = useState<SignInInput>({ email: '', password: '' });
 
-  // a handler for when the user clicks the "login" button
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

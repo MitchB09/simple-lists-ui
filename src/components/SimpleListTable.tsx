@@ -57,11 +57,9 @@ export default function SimpleListTable() {
       .then((response) => {
         setLists(response.data);
       })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
-      .then(() => {
-        // always executed
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.dir(error);
       });
     return () => {};
   }, []);

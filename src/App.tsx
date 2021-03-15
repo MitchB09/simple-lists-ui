@@ -43,6 +43,7 @@ function App() {
               <Route path="/login" component={LoginPage} />
               <Route path="/profile" component={ProfilePage} />
               <Route path="/:id/random" component={RandomPage} />
+              <Route path="/:id/edit" component={ListPage} editing />
               <Route path="/:id" component={ListPage} />
               <Route path="/" component={SimpleListTable} />
             </Switch>

@@ -13,13 +13,13 @@ function RandomItemPane(props: RandomItemPaneProps) {
   return (
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
-        <Button variant="contained">Open List</Button>
+        <Link to={`/${list.id}/edit`}>
+          <Button variant="contained">Open List</Button>
+        </Link>
       </div>
       <div className={styles.detailButton}>
-        <Link to={`/${ list.id }/random`}>
-          <Button variant="contained">
-            Get Random Item
-          </Button>
+        <Link to={`/${list.id}/random`}>
+          <Button variant="contained">Get Random Item</Button>
         </Link>
       </div>
     </div>

@@ -4,8 +4,8 @@
       "id": 1,
       "description": "Test New",
       "name": "New list",
-      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
-      "type": "RandomList"
+      "type": "RandomList",
+      "userId": "748d84c2-eb44-458e-a8ce-ccb6f1b93545"
     },
     {
       "id": 2,
@@ -25,7 +25,7 @@
           "id": "c35689f0-48ae-11eb-a274-db424178d82c"
         }
       ],
-      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "userId": "748d84c2-eb44-458e-a8ce-ccb6f1b93545",
       "type": "TodoList"
     },
     {
@@ -58,14 +58,14 @@
           "id": "c35689f0-48ae-11eb-a274-db424178d82c"
         }
       ],
-      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "userId": "748d84c2-eb44-458e-a8ce-ccb6f1b93545",
       "type": "TimedRandomList"
     },
     {
       "id": 4,
       "description": "The Third One",
       "name": "Number Three",
-      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "userId": "748d84c2-eb44-458e-a8ce-ccb6f1b93545",
       "type": "RandomList"
     },
     {
@@ -98,7 +98,7 @@
           "id": "10000005-48ae-11eb-a274-db424178d82c"
         }
       ],
-      "userId": "18afba84-1289-48cd-8a4b-c1d985f531b6",
+      "userId": "748d84c2-eb44-458e-a8ce-ccb6f1b93545",
       "type": "RandomList"
     }
   ]
