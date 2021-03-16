@@ -6,10 +6,11 @@ import { List } from '../../types';
 
 interface RandomItemPaneProps {
   list: List;
+  deleteList: () => void;
 }
 
 function RandomItemPane(props: RandomItemPaneProps) {
-  const { list } = props;
+  const { list, deleteList } = props;
   return (
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
@@ -21,6 +22,11 @@ function RandomItemPane(props: RandomItemPaneProps) {
         <Link to={`/${list.id}/random`}>
           <Button variant="contained">Get Random Item</Button>
         </Link>
+      </div>
+      <div className={styles.detailButton}>
+        <Button onClick={deleteList} variant="contained">
+          Delete
+        </Button>
       </div>
     </div>
   );

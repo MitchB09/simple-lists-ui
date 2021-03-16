@@ -7,22 +7,23 @@ import RandomItemPane from './RandomItemPane';
 
 export interface SimpleListDetailsProps {
   list: List;
+  deleteList: () => void;
 }
 
 function SimpleListDetails(props: SimpleListDetailsProps) {
-  const { list } = props;
+  const { list, deleteList } = props;
   switch (list.type) {
     case ListTypes.TodoList:
       return (
         <Box className={styles.detailPane}>
-          <TodoListPane list={list} />
+          <TodoListPane list={list} deleteList={deleteList} />
         </Box>
       );
     case ListTypes.RandomList:
     case ListTypes.TimedRandomList:
       return (
         <Box className={styles.detailPane}>
-          <RandomItemPane list={list} />
+          <RandomItemPane list={list} deleteList={deleteList} />
         </Box>
       );
     default:

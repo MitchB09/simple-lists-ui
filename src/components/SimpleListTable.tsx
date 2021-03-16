@@ -17,10 +17,11 @@ interface RowProps {
   list: List;
   expanded: boolean;
   setExpanded: () => void;
+  deleteList: () => void;
 }
 
 function Row(props: RowProps) {
-  const { list, expanded, setExpanded } = props;
+  const { list, expanded, setExpanded, deleteList } = props;
 
   const onChange = () => {
     setExpanded();
@@ -41,7 +42,7 @@ function Row(props: RowProps) {
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <SimpleListDetails list={list} />
+        <SimpleListDetails list={list} deleteList={deleteList} />
       </AccordionDetails>
     </Accordion>
   );
@@ -65,6 +66,19 @@ export default function SimpleListTable() {
     return () => {};
   }, []);
 
+  const deleteList = (listId: string) => {
+    api
+      .delete(`/lists/${listId}`)
+      .then(() => {
+        setLists((prevState) => prevState.filter((item) => item.id !== listId));
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.dir(error);
+        // TODO snackbar
+      });
+  };
+
   const handleChange = (list: string) => {
     setExpanded(list === expanded ? '' : list);
   };
@@ -78,6 +92,7 @@ export default function SimpleListTable() {
             list={row}
             expanded={expanded === row.id}
             setExpanded={() => handleChange(row.id)}
+            deleteList={() => deleteList(row.id)}
           />
         ))}
       </Paper>

@@ -6,16 +6,22 @@ import { List } from '../../types';
 
 interface TodoListPaneProps {
   list: List;
+  deleteList: () => void;
 }
 
 function TodoListPane(props: TodoListPaneProps) {
-  const { list } = props;
+  const { list, deleteList } = props;
   return (
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
-        <Link to={`/${list.id}`}>
-          <Button variant="contained">Open List</Button>
-        </Link>
+        <Button component={Link} to={`/${list.id}`} variant="contained">
+          Open List
+        </Button>
+      </div>
+      <div className={styles.detailButton}>
+        <Button variant="contained" onClick={deleteList}>
+          Delete
+        </Button>
       </div>
     </div>
   );
