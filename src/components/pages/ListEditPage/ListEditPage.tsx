@@ -103,7 +103,6 @@ const ListEditPage = (props: ListEditProps) => {
                 value={list.name}
                 onChange={handleChange}
                 style={{ minWidth: '20em', marginTop: '0.5em', marginBottom: '0.5em' }}
-                variant="outlined"
                 required
               />
             </Grid>
@@ -114,7 +113,6 @@ const ListEditPage = (props: ListEditProps) => {
                 value={list.description}
                 onChange={handleChange}
                 style={{ minWidth: '20em', marginBottom: '1.5em' }}
-                variant="outlined"
               />
             </Grid>
             {list.items &&

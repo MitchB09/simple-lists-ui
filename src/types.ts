@@ -2,7 +2,7 @@ export interface List {
   id: string;
   name: string;
   description: string;
-  type: string;
+  type: ListTypes;
   items?: ListItem[];
 }
 
@@ -28,4 +28,10 @@ export interface ListProps {
 
 export interface RandomPageProps {
   list: List;
+}
+
+export enum ListTypes {
+  RandomList = 'RandomList',
+  TodoList = 'TodoList',
+  TimedRandomList = 'TimedRandomList',
 }

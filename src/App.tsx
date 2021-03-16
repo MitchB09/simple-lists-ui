@@ -9,9 +9,11 @@ import ListPage from './components/pages/ListPage';
 import RandomPage from './components/pages/RandomPage';
 import LoginPage from './components/pages/LoginPage';
 import ProfilePage from './components/pages/ProfilePage';
+import { useUser } from './auth/hooks';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
+  const user = useUser();
   const palletType = darkState ? 'dark' : 'light';
   const darkTheme = createMuiTheme({
     palette: {
@@ -39,14 +41,18 @@ function App() {
             handleThemeChange={handleThemeChange}
           />
           <Box component="div" m={1} className="App-content">
-            <Switch>
-              <Route path="/login" component={LoginPage} />
-              <Route path="/profile" component={ProfilePage} />
-              <Route path="/:id/random" component={RandomPage} />
-              <Route path="/:id/edit" component={ListPage} editing />
-              <Route path="/:id" component={ListPage} />
-              <Route path="/" component={SimpleListTable} />
-            </Switch>
+            {user ? (
+              <Switch>
+                <Route path="/login" component={LoginPage} />
+                <Route path="/profile" component={ProfilePage} />
+                <Route path="/:id/random" component={RandomPage} />
+                <Route path="/:id/edit" component={ListPage} editing />
+                <Route path="/:id" component={ListPage} />
+                <Route path="/" component={SimpleListTable} />
+              </Switch>
+            ) : (
+              <LoginPage />
+            )}
           </Box>
         </Box>
       </MuiThemeProvider>

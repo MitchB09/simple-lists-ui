@@ -143,16 +143,9 @@ export default function PrimarySearchAppBar(props: any) {
                 <AccountCircle />
               </IconButton>
             ) : (
-              <Typography
-                component={Link}
-                to="/login"
-                className={classes.title}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-                variant="h6"
-                noWrap
-              >
-                Login
-              </Typography>
+              <IconButton edge="end" color="inherit" component={Link} to="/login">
+                <AccountCircleOutlined />
+              </IconButton>
             )}
           </div>
           <div className={classes.sectionMobile}>

@@ -117,15 +117,35 @@ const TimedTodo = (props: RandomPageProps) => {
             </Grid>
           ))
         ) : (
-          <Grid item>
-            <Button
-              onClick={() => {
-                setStarted(true);
-              }}
-            >
-              Start
-            </Button>
-          </Grid>
+          <>
+            <Grid item>
+              <Button
+                onClick={() => {
+                  setStarted(true);
+                }}
+              >
+                Start
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={() => {
+                  setTimerMinutes(5);
+                }}
+              >
+                5 Minutes
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={() => {
+                  setTimerMinutes(30);
+                }}
+              >
+                30 Minutes
+              </Button>
+            </Grid>
+          </>
         )}
         <Grid item>
           <Button
@@ -134,24 +154,6 @@ const TimedTodo = (props: RandomPageProps) => {
             }}
           >
             Get Another
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            onClick={() => {
-              setTimerMinutes(5);
-            }}
-          >
-            5 Minutes
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            onClick={() => {
-              setTimerMinutes(30);
-            }}
-          >
-            30 Minutes
           </Button>
         </Grid>
       </Grid>

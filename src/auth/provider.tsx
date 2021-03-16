@@ -12,25 +12,30 @@ interface AuthProps {
 const AuthProvider = ({ children }: AuthProps) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const auth = useAuth();
+  const { user } = auth;
 
   useEffect(() => {
     const getAuthHeader = async () => {
-      try {
-        const session = await Auth.currentSession();
-        const jwt = session.getIdToken().getJwtToken();
+      Auth.currentSession()
+        .then((session) => {
+          const jwt = session.getIdToken().getJwtToken();
 
-        api.interceptors.request.use((config) => {
-          const authConfig = { ...config };
-          authConfig.headers.Authorization = `${jwt}`;
-          return authConfig;
+          api.interceptors.request.use((config) => {
+            const authConfig = { ...config };
+            authConfig.headers.Authorization = `${jwt}`;
+            return authConfig;
+          });
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.dir(error);
+        })
+        .finally(() => {
+          setLoaded(true);
         });
-        setLoaded(true);
-      } catch (error) {
-        console.dir(error);
-      }
     };
     getAuthHeader();
-  }, []);
+  }, [user]);
 
   return <AuthContext.Provider value={auth}>{loaded && children}</AuthContext.Provider>;
 };

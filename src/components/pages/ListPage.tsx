@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import styles from './ListPage.module.css';
 // import TodoListPane from './TimedTodo/RandomItem';
 import api from '../../api';
-import { List } from '../../types';
+import { List, ListTypes } from '../../types';
 import TodoList from './TodoList/TodoList';
 import TimedTodo from './TimedTodo/TimedTodo';
 import ListEditPage from './ListEditPage/ListEditPage';
@@ -54,6 +54,7 @@ function ListPage(editMode?: boolean) {
   };
 
   if (!list) {
+    // eslint-disable-next-line no-console
     console.dir(setEditing);
     return <>loading...</>;
   }
@@ -69,13 +70,13 @@ function ListPage(editMode?: boolean) {
     );
   }
   switch (list.type) {
-    case 'TodoList':
+    case ListTypes.TodoList:
       return (
         <Box className={styles.detailPane}>
           <TodoList list={list} updateList={updateList} />
         </Box>
       );
-    case 'TimedRandomList':
+    case ListTypes.TimedRandomList:
       return (
         <Box className={styles.detailPane}>
           <TimedTodo list={list} />
