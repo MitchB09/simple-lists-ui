@@ -75,8 +75,10 @@ export default function CreateListDialog(props: CreateListDialogProps) {
         <DialogTitle id="form-dialog-title">Add List</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
+            Create a new simple list! Either a Random Item Picker (selectes a random item from a
+            your predefined list), a Timed Random Item (picks a new item to be completed every 5,
+            15, or 30 minutes), or a To-Do List. After creation, you&apos;ll be redirected to a page
+            for populating your list.
           </DialogContentText>
           <TextField
             autoFocus

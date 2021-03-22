@@ -62,6 +62,7 @@ function ProfilePage() {
       <Grid container direction="column" justify="center" alignItems="center">
         <Paper
           color="primary"
+          variant="outlined"
           style={{ minWidth: '50vw', backgroundColor: '#303030', margin: '1em', padding: '1em' }}
         >
           <form onSubmit={handleSubmit}>
