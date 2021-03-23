@@ -45,7 +45,6 @@ jobs:
         npm install
         npm run build --if-present 
     - name: deploy
-      uses: reggionick/s3-deploy@v3
       run: |
         aws s3 sync build s3://simple-lists-s3bucket-1ox7m8193u2id --delete
         aws cloudfront create-invalidation --distribution-id E1KRRYG6EWF75C --paths "/*"
