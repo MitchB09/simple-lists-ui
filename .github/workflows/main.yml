@@ -1,11 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 
 name: CI
-
-
 env:
-  NODE_VERSION: '10.x'                # set this to the node version to use
-
+  NODE_VERSION: '10.x'   # set this to the node version to use
 
 # Controls when the action will run. 
 on:
@@ -17,52 +14,37 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
-    name: Upload to Amazon S3
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    environment: simple-lists.bilensky.ca
-    
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
 
-    - name: Configure AWS Credentials
+    - name: Build
+      run: |
+        npm install
+        npm run build --if-present 
+    
+    - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
-# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-#  jobs:
-#   build-and-deploy:
-#     name: Build and Deploy
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v2
-      
-#     - name: Use Node.js ${{ env.NODE_VERSION }}
-#       uses: actions/setup-node@v1
-#       with:
-#         node-version: ${{ env.NODE_VERSION }}
-
-#     - name: Build
-#       run: |
-#         npm install
-#         npm run build --if-present 
-#     - name: Configure AWS credentials from Test account
-#       uses: aws-actions/configure-aws-credentials@v1
-#       with:
-#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         aws-region: us-east-1
-#     - name: Copy files to the test website with the AWS CLI
-#       run: |
-#         aws s3 sync build/ s3://simple-lists-s3bucket-1ox7m8193u2id
-#     - name: invalidate cache
-#       run: 
-#         aws cloudfront create-invalidation --distribution-id E1KRRYG6EWF75C --paths "/*"
+        aws-region: us-east-1
+    
+    - name: Copy files to the test website with the AWS CLI
+      run: |
+        aws s3 sync build/ s3://simple-lists-s3bucket-1ox7m8193u2id
+    
+    - name: invalidate cache
+      run: 
+        aws cloudfront create-invalidation --distribution-id E1KRRYG6EWF75C --paths "/*"
