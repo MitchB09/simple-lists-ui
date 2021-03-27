@@ -2,6 +2,7 @@
 
 name: CI
 
+
 env:
   NODE_VERSION: '10.x'                # set this to the node version to use
 
@@ -22,6 +23,7 @@ jobs:
   deploy:
     name: Upload to Amazon S3
     runs-on: ubuntu-latest
+    environment: simple-lists.bilensky.ca
     
 
     steps:
