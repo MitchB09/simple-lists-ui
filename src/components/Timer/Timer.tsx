@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import RestoreIcon from '@material-ui/icons/Restore';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from '@material-ui/core/IconButton';
 import css from './Timer.module.css';
 
-interface TimerProps {
-  seconds: number;
-  paused: boolean;
-  onComplete: () => void;
-}
-
-function Timer(props: TimerProps) {
-  const { seconds, paused, onComplete } = props;
+// eslint-disable-next-line react/require-default-props
+function Timer(props: { seconds: number; onComplete: () => void; resetOnComplete?: boolean }) {
+  const { seconds, onComplete, resetOnComplete } = props;
   const [timeLeft, setTimeLeft] = useState<number>(seconds);
+  const [paused, setPaused] = useState<boolean>(false);
 
   useEffect(() => {
     if (seconds && timeLeft === 0) {
       onComplete();
-      // setTimeLeft(seconds);
+      if (resetOnComplete) {
+        setTimeLeft(seconds);
+      }
     }
 
     // exit early when we reach 0
@@ -33,7 +33,7 @@ function Timer(props: TimerProps) {
     return () => clearInterval(intervalId);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft]);
+  }, [timeLeft, paused]);
 
   const displayime = () => `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:
     ${String(timeLeft % 60).padStart(2, '0')}`;
@@ -44,6 +44,9 @@ function Timer(props: TimerProps) {
         {displayime()}
         <IconButton onClick={() => setTimeLeft(seconds)} style={{ padding: '4px' }}>
           <RestoreIcon />
+        </IconButton>
+        <IconButton onClick={() => setPaused(!paused)} style={{ padding: '4px' }}>
+          {paused ? <PlayArrow /> : <PauseIcon />}
         </IconButton>
       </span>
     </>

@@ -39,18 +39,33 @@ function ListPage(editMode?: boolean) {
   }, [id]);
 
   const updateList = (updatedList: List) => {
-    api
-      .put<List>(`/lists/${id}`, updatedList)
-      .then((response) => {
-        // eslint-disable-next-line no-console
-        console.dir(response);
-        // TODO snackbar
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
-      });
+    if (updatedList.id) {
+      api
+        .put<List>(`/lists/${id}`, updatedList)
+        .then((response) => {
+          // eslint-disable-next-line no-console
+          console.dir(response);
+          // TODO snackbar
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.dir(error);
+          // TODO snackbar
+        });
+    } else {
+      api
+        .post<List>('/lists', updatedList)
+        .then((response) => {
+          // eslint-disable-next-line no-console
+          console.dir(response);
+          // TODO snackbar
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.dir(error);
+          // TODO snackbar
+        });
+    }
   };
 
   if (!list) {

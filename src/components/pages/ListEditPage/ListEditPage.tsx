@@ -72,10 +72,10 @@ const ListEditPage = (props: ListEditProps) => {
   };
 */
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await updateList(list);
+      updateList(list);
       setOpen(true);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -166,15 +166,6 @@ const ListEditPage = (props: ListEditProps) => {
                 to="/"
               >
                 Cancel
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() => setOpen(true)}
-                variant="outlined"
-                style={{ ...cssStyle, marginBottom: '0.5em' }}
-              >
-                Test
               </Button>
             </Grid>
           </Paper>
