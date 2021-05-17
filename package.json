@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node data/server.js & react-scripts start",
+    "start": "react-scripts start",
     "api": "node data/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",

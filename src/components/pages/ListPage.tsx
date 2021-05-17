@@ -13,19 +13,25 @@ interface RouteInfo {
   id: string;
 }
 
+interface RouteProps {
+  editMode?: boolean;
+  publicList?: boolean
+}
+
 export interface ListPageProps {
   list: List;
   updateList: () => void;
 }
 
-function ListPage(editMode?: boolean) {
+function ListPage(props: RouteProps) {
+  const { editMode, publicList } = props;
   const { id } = useParams<RouteInfo>();
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
 
   useEffect(() => {
     api
-      .get<List>(`/lists/${id}`)
+      .get<List>(publicList ? `public/lists/${id}` : `/lists/${id}`)
       .then((response) => {
         const { data } = response;
         setList(data);
@@ -36,7 +42,7 @@ function ListPage(editMode?: boolean) {
         // TODO snackbar
       });
     return () => {};
-  }, [id]);
+  }, [id, publicList]);
 
   const updateList = (updatedList: List) => {
     if (updatedList.id) {

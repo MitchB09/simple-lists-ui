@@ -12,13 +12,18 @@ interface RouteInfo {
   id: string;
 }
 
-function ListPage() {
+interface RandomPageProps  {
+  publicList?: boolean;
+}
+
+function RandomPage(props: RandomPageProps) {
+  const { publicList } = props;
   const { id } = useParams<RouteInfo>();
   const [list, setList] = useState<List>();
 
   useEffect(() => {
     api
-      .get<List>(`/lists/${id}`)
+      .get<List>(publicList ? `public/lists/${id}` : `/lists/${id}`)
       .then((response) => {
         const { data } = response;
         setList(data);
@@ -29,7 +34,7 @@ function ListPage() {
         // TODO snackbar
       });
     return () => {};
-  }, [id]);
+  }, [publicList, id]);
   if (!list) {
     return <>loading...</>;
   }
@@ -51,4 +56,4 @@ function ListPage() {
   }
 }
 
-export default ListPage;
+export default RandomPage;

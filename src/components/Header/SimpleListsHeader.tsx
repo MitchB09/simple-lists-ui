@@ -135,6 +135,19 @@ export default function PrimarySearchAppBar(props: any) {
           >
             Simple Lists
           </Typography>
+          {user && (
+            <Typography
+              component={Link}
+              to="/user"
+              className={classes.title}
+              style={{ textDecoration: 'none', marginLeft: '1.5em', color: 'inherit' }}
+              variant="subtitle1"
+              noWrap
+            >
+              My Lists
+            </Typography>
+          )}
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Switch checked={darkState} onChange={handleThemeChange} />

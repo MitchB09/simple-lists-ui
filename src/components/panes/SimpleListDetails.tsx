@@ -4,14 +4,23 @@ import styles from './SimpleListDetails.module.css';
 import TodoListPane from './TodoListPane';
 import { List, ListTypes } from '../../types';
 import RandomItemPane from './RandomItemPane';
+import PublicListPane from './PublicListPane';
 
 export interface SimpleListDetailsProps {
   list: List;
-  deleteList: () => void;
+  publicList?: boolean;
+  deleteList?: () => void;
 }
 
-function SimpleListDetails(props: SimpleListDetailsProps) {
-  const { list, deleteList } = props;
+function SimpleListDetails(props: SimpleListDetailsProps): JSX.Element {
+  const { list, publicList, deleteList } = props;
+  if (publicList) {
+    return (
+      <Box className={styles.detailPane}>
+        <PublicListPane list={list} />
+      </Box>
+    );
+  }
   switch (list.type) {
     case ListTypes.TodoList:
       return (

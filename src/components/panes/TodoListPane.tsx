@@ -6,7 +6,7 @@ import { List } from '../../types';
 
 interface TodoListPaneProps {
   list: List;
-  deleteList: () => void;
+  deleteList?: () => void;
 }
 
 function TodoListPane(props: TodoListPaneProps) {
@@ -14,15 +14,18 @@ function TodoListPane(props: TodoListPaneProps) {
   return (
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
-        <Button component={Link} to={`/${list.id}`} variant="contained">
+        <Button component={Link} to={`/user/${list.id}`} variant="contained">
           Open List
         </Button>
       </div>
-      <div className={styles.detailButton}>
-        <Button variant="contained" onClick={deleteList}>
-          Delete
-        </Button>
-      </div>
+      {deleteList && (
+        <div className={styles.detailButton}>
+          <Button variant="contained" onClick={deleteList}>
+            Delete
+          </Button>
+        </div>
+      )}
+      ;
     </div>
   );
 }
