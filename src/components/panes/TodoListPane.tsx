@@ -15,7 +15,7 @@ function TodoListPane(props: TodoListPaneProps) {
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
         <Button component={Link} to={`/user/${list.id}`} variant="contained">
-          Open List
+          Check List
         </Button>
       </div>
       {deleteList && (
@@ -25,7 +25,6 @@ function TodoListPane(props: TodoListPaneProps) {
           </Button>
         </div>
       )}
-      ;
     </div>
   );
 }

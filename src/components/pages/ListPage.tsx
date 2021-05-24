@@ -26,6 +26,7 @@ export interface ListPageProps {
 function ListPage(props: RouteProps) {
   const { editMode, publicList } = props;
   const { id } = useParams<RouteInfo>();
+  const [loading, setLoading] = useState(true);
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
 
@@ -40,12 +41,15 @@ function ListPage(props: RouteProps) {
         // eslint-disable-next-line no-console
         console.dir(error);
         // TODO snackbar
+      }).finally(() => {
+        setLoading(false);
       });
     return () => {};
   }, [id, publicList]);
 
   const updateList = (updatedList: List) => {
     if (updatedList.id) {
+      setLoading(true);
       api
         .put<List>(`/lists/${id}`, updatedList)
         .then((response) => {
@@ -57,8 +61,12 @@ function ListPage(props: RouteProps) {
           // eslint-disable-next-line no-console
           console.dir(error);
           // TODO snackbar
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
+      setLoading(true);
       api
         .post<List>('/lists', updatedList)
         .then((response) => {
@@ -70,14 +78,20 @@ function ListPage(props: RouteProps) {
           // eslint-disable-next-line no-console
           console.dir(error);
           // TODO snackbar
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
 
-  if (!list) {
+  if (loading) {
     // eslint-disable-next-line no-console
     console.dir(setEditing);
     return <>loading...</>;
+  }
+  if (!list) {
+    return <>Not Found!</>;
   }
   if (editing) {
     return (

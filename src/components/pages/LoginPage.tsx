@@ -1,6 +1,16 @@
-import { TextField, Paper, Button, Grid } from '@material-ui/core';
+import {
+  TextField,
+  Paper,
+  Button,
+  Grid,
+  IconButton,
+  Snackbar,
+  Typography,
+} from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ErrorIcon from '@material-ui/icons/Error';
+import CloseIcon from '@material-ui/icons/Close';
 import { useSignIn } from '../../auth/hooks';
 import { SignInInput } from '../../auth/types';
 
@@ -8,16 +18,19 @@ function LoginPage() {
   const signIn = useSignIn();
   const history = useHistory();
   const [signInInput, setSignInInput] = useState<SignInInput>({ email: '', password: '' });
+  const [errorText, setErrorText] = useState<string>('');
+  const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await signIn({ email: signInInput.email, password: signInInput.password });
-      history.push('/');
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.dir(err);
-    }
+    signIn({ email: signInInput.email, password: signInInput.password })
+      .then(() => {
+        history.push('/');
+      })
+      .catch((err) => {
+        setErrorText(err.message);
+        setOpen(true);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +39,14 @@ function LoginPage() {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const cssStyle = {
@@ -83,6 +104,43 @@ function LoginPage() {
           </form>
         </Paper>
       </Grid>
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        autoHideDuration={5000}
+      >
+        <Paper
+          style={{
+            height: '3em',
+            margin: '10px',
+            textAlign: 'center',
+            padding: '10px',
+            color: '#fff',
+            backgroundColor: '#f44336',
+          }}
+        >
+          <Grid container spacing={1} direction="row" justify="center" alignItems="flex-start">
+            <Grid item>
+              <ErrorIcon />
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle2" style={{ margin: 'auto' }}>
+                {errorText}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton
+                onClick={() => setOpen(false)}
+                style={{ padding: '0px', marginLeft: '12px' }}
+                color="inherit"
+              >
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Snackbar>
     </Paper>
   );
 }

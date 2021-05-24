@@ -7,10 +7,15 @@ import Add from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
+import api from '../../../api';
 import { List, ListProps } from '../../../types';
 // mport styles from './ListEditPage.module.css';
+
+interface RouteInfo {
+  id: string;
+}
 
 interface ListEditProps extends ListProps {
   setList: (list: List) => void;
@@ -20,6 +25,7 @@ const ListEditPage = (props: ListEditProps) => {
   const { list, setList, updateList } = props;
   const [newItem, setNewItem] = useState<string>('');
   const [open, setOpen] = React.useState(false);
+  const { id } = useParams<RouteInfo>();
 
   /*
   useEffect(() => {
@@ -81,6 +87,21 @@ const ListEditPage = (props: ListEditProps) => {
       // eslint-disable-next-line no-console
       console.dir(err);
     }
+  };
+
+  const publishList = () => {
+    api
+      .post<List>(`/lists/${id}/publish`, list)
+      .then((response) => {
+        // eslint-disable-next-line no-console
+        console.dir(response);
+        // TODO snackbar
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.dir(error);
+        // TODO snackbar
+      });
   };
 
   const cssStyle = {
@@ -158,6 +179,19 @@ const ListEditPage = (props: ListEditProps) => {
                 Update
               </Button>
             </Grid>
+            {list.id && (
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  style={{ ...cssStyle, marginBottom: '0.5em' }}
+                  onClick={() => {
+                    publishList();
+                  }}
+                >
+                  Publish
+                </Button>
+              </Grid>
+            )}
             <Grid item>
               <Button
                 component={Link}

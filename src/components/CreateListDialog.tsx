@@ -55,7 +55,7 @@ export default function CreateListDialog(props: CreateListDialogProps) {
     api
       .post<List>('/lists', createdList)
       .then(({ data }) => {
-        history.push(`/${data.id}/edit`);
+        history.push(`/user/${data.id}/edit`);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console

@@ -28,7 +28,7 @@ const RandomItem = (props: RandomPageProps) => {
           {randomItem}
         </Typography>
       </div>
-      <Button variant="contained" onClick={getRandom}>
+      <Button variant="contained" onClick={getRandom} style={{ margin: '1rem 0px' }}>
         Get Another
       </Button>
     </Paper>
