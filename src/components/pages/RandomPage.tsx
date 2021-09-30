@@ -7,6 +7,7 @@ import api from '../../api';
 import { List, ListTypes } from '../../types';
 import RandomItem from './RandomItem/RandomItem';
 import TimedTodo from './TimedTodo/TimedTodo';
+import { useSnackbar } from '../../snackbar/hooks';
 
 interface RouteInfo {
   id: string;
@@ -19,6 +20,7 @@ interface RandomPageProps  {
 function RandomPage(props: RandomPageProps) {
   const { publicList } = props;
   const { id } = useParams<RouteInfo>();
+  const snackbar = useSnackbar();
   const [list, setList] = useState<List>();
 
   useEffect(() => {
@@ -28,13 +30,11 @@ function RandomPage(props: RandomPageProps) {
         const { data } = response;
         setList(data);
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Retrieving List: ${err.message}`);
       });
     return () => {};
-  }, [publicList, id]);
+  }, [publicList, id, snackbar]);
   if (!list) {
     return <>loading...</>;
   }

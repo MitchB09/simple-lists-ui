@@ -1,17 +1,16 @@
-import { Snackbar, TextField, Typography } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Add from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
 import api from '../../../api';
+import { useSnackbar } from '../../../snackbar/hooks';
 import { List, ListProps } from '../../../types';
-// mport styles from './ListEditPage.module.css';
+// import styles from './ListEditPage.module.css';
 
 interface RouteInfo {
   id: string;
@@ -24,14 +23,9 @@ interface ListEditProps extends ListProps {
 const ListEditPage = (props: ListEditProps) => {
   const { list, setList, updateList } = props;
   const [newItem, setNewItem] = useState<string>('');
-  const [open, setOpen] = React.useState(false);
   const { id } = useParams<RouteInfo>();
+  const snackbar = useSnackbar();
 
-  /*
-  useEffect(() => {
-    setTodoList(list.items as TodoItem[]);
-  }, [list]);
-*/
   const createItem = () => {
     if (setNewItem) {
       const newTodo = { id: uuidv1(), value: newItem };
@@ -62,45 +56,19 @@ const ListEditPage = (props: ListEditProps) => {
     }
   };
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  /*
-  const deleteItem = (deletedItem: TodoItem) => {
-    if (deletedItem) {
-      setTodoList((prevState) => prevState.filter((item) => item.id !== deletedItem.id));
-    }
-  };
-*/
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      updateList(list);
-      setOpen(true);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.dir(err);
-    }
+    updateList(list);
   };
 
   const publishList = () => {
     api
       .post<List>(`/lists/${id}/publish`, list)
-      .then((response) => {
-        // eslint-disable-next-line no-console
-        console.dir(response);
-        // TODO snackbar
+      .then(() => {
+        snackbar.addSuccess('Successfully Published List');
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Publishing List: ${err.message}`);
       });
   };
 
@@ -202,45 +170,20 @@ const ListEditPage = (props: ListEditProps) => {
                 Cancel
               </Button>
             </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                style={{ ...cssStyle, marginBottom: '0.5em' }}
+                onClick={() => {
+                  snackbar.addSuccess(`Snackbar test: ${new Date().getMilliseconds()}`);
+                }}
+              >
+                Snackbar Test
+              </Button>
+            </Grid>
           </Paper>
         </form>
       </Grid>
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        autoHideDuration={5000}
-      >
-        <Paper
-          style={{
-            height: '3em',
-            margin: '10px',
-            textAlign: 'center',
-            padding: '10px',
-            backgroundColor: '#4caf50',
-          }}
-        >
-          <Grid container spacing={1} direction="row" justify="center" alignItems="flex-start">
-            <Grid item>
-              <CheckIcon />
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle2" style={{ margin: 'auto' }}>
-                This is a success message!
-              </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton
-                onClick={() => setOpen(false)}
-                style={{ padding: '0px', marginLeft: '12px' }}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Snackbar>
     </Paper>
   );
 };

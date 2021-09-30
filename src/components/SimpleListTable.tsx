@@ -12,6 +12,7 @@ import SimpleListDetails from './panes/SimpleListDetails';
 import { List } from '../types';
 import api from '../api';
 import CreateListDialog from './CreateListDialog';
+import { useSnackbar } from '../snackbar/hooks';
 
 interface RowProps {
   list: List;
@@ -52,6 +53,7 @@ export default function SimpleListTable() {
   const [lists, setLists] = useState<List[]>([]);
   const [expanded, setExpanded] = useState<string>('');
   const [createNew, setCreateNew] = useState<boolean>(false);
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     api
@@ -71,11 +73,10 @@ export default function SimpleListTable() {
       .delete(`/lists/${listId}`)
       .then(() => {
         setLists((prevState) => prevState.filter((item) => item.id !== listId));
+        snackbar.addError('Successfully Deleted List');
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Deleting List: ${err.message}`);
       });
   };
 

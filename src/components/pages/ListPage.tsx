@@ -8,6 +8,7 @@ import { List, ListTypes } from '../../types';
 import TodoList from './TodoList/TodoList';
 import TimedTodo from './TimedTodo/TimedTodo';
 import ListEditPage from './ListEditPage/ListEditPage';
+import { useSnackbar } from '../../snackbar/hooks';
 
 interface RouteInfo {
   id: string;
@@ -15,7 +16,7 @@ interface RouteInfo {
 
 interface RouteProps {
   editMode?: boolean;
-  publicList?: boolean
+  publicList?: boolean;
 }
 
 export interface ListPageProps {
@@ -29,6 +30,7 @@ function ListPage(props: RouteProps) {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     api
@@ -38,29 +40,24 @@ function ListPage(props: RouteProps) {
         setList(data);
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
-      }).finally(() => {
+        snackbar.addError(error);
+      })
+      .finally(() => {
         setLoading(false);
       });
     return () => {};
-  }, [id, publicList]);
+  }, [id, publicList, snackbar]);
 
   const updateList = (updatedList: List) => {
     if (updatedList.id) {
       setLoading(true);
       api
         .put<List>(`/lists/${id}`, updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          snackbar.addSuccess('Updated List Successfully');
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+        .catch((err) => {
+          snackbar.addError(`Error Updating List: ${err.message}`);
         })
         .finally(() => {
           setLoading(false);
@@ -69,15 +66,11 @@ function ListPage(props: RouteProps) {
       setLoading(true);
       api
         .post<List>('/lists', updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          snackbar.addSuccess('Created List Successfully');
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+        .catch((err) => {
+          snackbar.addError(`Error Creating List: ${err.message}`);
         })
         .finally(() => {
           setLoading(false);

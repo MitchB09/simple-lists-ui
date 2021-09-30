@@ -11,6 +11,7 @@ import ProfilePage from './components/pages/ProfilePage';
 import { useUser } from './auth/hooks';
 import PublicListTable from './components/PublicListTable';
 import SimpleListTable from './components/SimpleListTable';
+import SnackbarProvider from './snackbar/SnackbarProvider';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
@@ -35,35 +36,37 @@ function App() {
     <Router>
       <MuiThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Box component="div" m={1} className="App">
-          <SimpleListsHeader
-            className="App-header"
-            darkState={darkState}
-            handleThemeChange={handleThemeChange}
-          />
-          <Box component="div" m={1} className="App-content">
-            {user ? (
-              <Switch>
-                <Route path="/login" exact component={LoginPage} />
-                <Route path="/profile" exact component={ProfilePage} />
-                <Route path="/user/:id/random" component={RandomPage} />
-                <Route path="/user/:id/edit" render={() => <ListPage editMode />} />
-                <Route path="/user/:id" component={ListPage} />
-                <Route path="/user" component={SimpleListTable} />
-                <Route path="/:id/random" render={() => <RandomPage publicList />} />
-                <Route path="/:id" render={() => <ListPage publicList />} />
-                <Route path="/" component={PublicListTable} />
-              </Switch>
-            ) : (
-              <Switch>
-                <Route path="/login" component={LoginPage} />
-                <Route path="/:id/random" render={() => <RandomPage publicList />} />
-                <Route path="/:id" render={() => <ListPage publicList />} />
-                <Route path="/" component={PublicListTable} />
-              </Switch>
-            )}
+        <SnackbarProvider>
+          <Box component="div" m={1} className="App">
+            <SimpleListsHeader
+              className="App-header"
+              darkState={darkState}
+              handleThemeChange={handleThemeChange}
+            />
+            <Box component="div" m={1} className="App-content">
+              {user ? (
+                <Switch>
+                  <Route path="/login" exact component={LoginPage} />
+                  <Route path="/profile" exact component={ProfilePage} />
+                  <Route path="/user/:id/random" component={RandomPage} />
+                  <Route path="/user/:id/edit" render={() => <ListPage editMode />} />
+                  <Route path="/user/:id" component={ListPage} />
+                  <Route path="/user" component={SimpleListTable} />
+                  <Route path="/:id/random" render={() => <RandomPage publicList />} />
+                  <Route path="/:id" render={() => <ListPage publicList />} />
+                  <Route path="/" component={PublicListTable} />
+                </Switch>
+              ) : (
+                <Switch>
+                  <Route path="/login" component={LoginPage} />
+                  <Route path="/:id/random" render={() => <RandomPage publicList />} />
+                  <Route path="/:id" render={() => <ListPage publicList />} />
+                  <Route path="/" component={PublicListTable} />
+                </Switch>
+              )}
+            </Box>
           </Box>
-        </Box>
+        </SnackbarProvider>
       </MuiThemeProvider>
     </Router>
   );
