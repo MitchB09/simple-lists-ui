@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { useParams } from 'react-router-dom';
 import styles from './ListPage.module.css';
-// import TodoListPane from './TimedTodo/RandomItem';
 import api from '../../api';
 import { List, ListTypes } from '../../types';
 import TodoList from './TodoList/TodoList';
 import TimedTodo from './TimedTodo/TimedTodo';
 import ListEditPage from './ListEditPage/ListEditPage';
+import { useSnackbar } from '../../snackbar/hooks';
 
 interface RouteInfo {
   id: string;
@@ -15,7 +15,6 @@ interface RouteInfo {
 
 interface RouteProps {
   editMode?: boolean;
-  publicList?: boolean
 }
 
 export interface ListPageProps {
@@ -24,43 +23,39 @@ export interface ListPageProps {
 }
 
 function ListPage(props: RouteProps) {
-  const { editMode, publicList } = props;
+  const { editMode } = props;
   const { id } = useParams<RouteInfo>();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
 
+  const { openSnackbar } = useSnackbar();
+
   useEffect(() => {
     api
-      .get<List>(publicList ? `public/lists/${id}` : `/lists/${id}`)
+      .get<List>(`/lists/${id}`)
       .then((response) => {
         const { data } = response;
         setList(data);
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
         console.dir(error);
-        // TODO snackbar
       }).finally(() => {
         setLoading(false);
       });
     return () => {};
-  }, [id, publicList]);
+  }, [id]);
 
   const updateList = (updatedList: List) => {
     if (updatedList.id) {
       setLoading(true);
       api
         .put<List>(`/lists/${id}`, updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          openSnackbar('Successfully Updated List');
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+          openSnackbar(error, 'error');
         })
         .finally(() => {
           setLoading(false);
@@ -69,15 +64,11 @@ function ListPage(props: RouteProps) {
       setLoading(true);
       api
         .post<List>('/lists', updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          openSnackbar('Successfully Updated List');
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+          openSnackbar(error, 'error');
         })
         .finally(() => {
           setLoading(false);

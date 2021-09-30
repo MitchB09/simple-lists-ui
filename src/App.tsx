@@ -8,13 +8,12 @@ import ListPage from './components/pages/ListPage';
 import RandomPage from './components/pages/RandomPage';
 import LoginPage from './components/pages/LoginPage';
 import ProfilePage from './components/pages/ProfilePage';
-import { useUser } from './auth/hooks';
 import PublicListTable from './components/PublicListTable';
 import SimpleListTable from './components/SimpleListTable';
+import SnackbarProvider from './snackbar/SnackbarProvider';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
-  const user = useUser();
   const palletType = darkState ? 'dark' : 'light';
   const darkTheme = createMuiTheme({
     palette: {
@@ -34,15 +33,15 @@ function App() {
   return (
     <Router>
       <MuiThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Box component="div" m={1} className="App">
-          <SimpleListsHeader
-            className="App-header"
-            darkState={darkState}
-            handleThemeChange={handleThemeChange}
-          />
-          <Box component="div" m={1} className="App-content">
-            {user ? (
+        <SnackbarProvider>
+          <CssBaseline />
+          <Box component="div" m={1} className="App">
+            <SimpleListsHeader
+              className="App-header"
+              darkState={darkState}
+              handleThemeChange={handleThemeChange}
+            />
+            <Box component="div" m={1} className="App-content">
               <Switch>
                 <Route path="/login" exact component={LoginPage} />
                 <Route path="/profile" exact component={ProfilePage} />
@@ -50,20 +49,13 @@ function App() {
                 <Route path="/user/:id/edit" render={() => <ListPage editMode />} />
                 <Route path="/user/:id" component={ListPage} />
                 <Route path="/user" component={SimpleListTable} />
-                <Route path="/:id/random" render={() => <RandomPage publicList />} />
-                <Route path="/:id" render={() => <ListPage publicList />} />
+                <Route path="/:id/random" render={() => <RandomPage />} />
+                <Route path="/:id" render={() => <ListPage />} />
                 <Route path="/" component={PublicListTable} />
               </Switch>
-            ) : (
-              <Switch>
-                <Route path="/login" component={LoginPage} />
-                <Route path="/:id/random" render={() => <RandomPage publicList />} />
-                <Route path="/:id" render={() => <ListPage publicList />} />
-                <Route path="/" component={PublicListTable} />
-              </Switch>
-            )}
+            </Box>
           </Box>
-        </Box>
+        </SnackbarProvider>
       </MuiThemeProvider>
     </Router>
   );
