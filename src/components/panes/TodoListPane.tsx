@@ -6,7 +6,7 @@ import { List } from '../../types';
 
 interface TodoListPaneProps {
   list: List;
-  deleteList: () => void;
+  deleteList?: () => void;
 }
 
 function TodoListPane(props: TodoListPaneProps) {
@@ -19,9 +19,11 @@ function TodoListPane(props: TodoListPaneProps) {
         </Button>
       </div>
       <div className={styles.detailButton}>
-        <Button variant="contained" onClick={deleteList}>
-          Delete
-        </Button>
+        {deleteList && (
+          <Button variant="contained" onClick={deleteList}>
+            Delete
+          </Button>
+        )}
       </div>
     </div>
   );

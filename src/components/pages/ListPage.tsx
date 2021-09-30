@@ -20,6 +20,7 @@ export interface ListPageProps {
 
 function ListPage(editMode?: boolean) {
   const { id } = useParams<RouteInfo>();
+
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
 

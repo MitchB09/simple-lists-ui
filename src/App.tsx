@@ -10,11 +10,14 @@ import RandomPage from './components/pages/RandomPage';
 import LoginPage from './components/pages/LoginPage';
 import ProfilePage from './components/pages/ProfilePage';
 import { useUser } from './auth/hooks';
+import PublicListTable from './components/PublicListTable';
+import PublicListPage from './components/pages/PublicListPage';
 
 function App() {
   const [darkState, setDarkState] = useState(true);
   const user = useUser();
   const palletType = darkState ? 'dark' : 'light';
+  const PublicContext = React.createContext(true);
   const darkTheme = createMuiTheme({
     palette: {
       type: palletType,
@@ -42,16 +45,24 @@ function App() {
           />
           <Box component="div" m={1} className="App-content">
             {user ? (
-              <Switch>
-                <Route path="/login" component={LoginPage} />
-                <Route path="/profile" component={ProfilePage} />
-                <Route path="/:id/random" component={RandomPage} />
-                <Route path="/:id/edit" component={ListPage} editing />
-                <Route path="/:id" component={ListPage} />
-                <Route path="/" component={SimpleListTable} />
-              </Switch>
+              <PublicContext.Provider value={false}>
+                <Switch>
+                  <Route path="/login" component={LoginPage} />
+                  <Route path="/profile" component={ProfilePage} />
+                  <Route path="/:id/random" component={RandomPage} />
+                  <Route path="/:id/edit" component={ListPage} editing />
+                  <Route path="/:id" component={ListPage} />
+                  <Route path="/" component={SimpleListTable} />
+                </Switch>
+              </PublicContext.Provider>
             ) : (
-              <LoginPage />
+              <PublicContext.Provider value>
+                <Switch>
+                  <Route path="/login" component={LoginPage} />
+                  <Route path="/:id" component={PublicListPage} />
+                  <Route path="/" component={PublicListTable} />
+                </Switch>
+              </PublicContext.Provider>
             )}
           </Box>
         </Box>

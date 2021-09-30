@@ -7,7 +7,7 @@ import RandomItemPane from './RandomItemPane';
 
 export interface SimpleListDetailsProps {
   list: List;
-  deleteList: () => void;
+  deleteList?: () => void;
 }
 
 function SimpleListDetails(props: SimpleListDetailsProps) {

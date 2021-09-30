@@ -6,7 +6,7 @@ import { List } from '../../types';
 
 interface RandomItemPaneProps {
   list: List;
-  deleteList: () => void;
+  deleteList?: () => void;
 }
 
 function RandomItemPane(props: RandomItemPaneProps) {
@@ -14,9 +14,11 @@ function RandomItemPane(props: RandomItemPaneProps) {
   return (
     <div className={styles.detailButtons}>
       <div className={styles.detailButton}>
-        <Link to={`/${list.id}/edit`}>
-          <Button variant="contained">Open List</Button>
-        </Link>
+        {deleteList && (
+          <Link to={`/${list.id}/edit`}>
+            <Button variant="contained">Open List</Button>
+          </Link>
+        )}
       </div>
       <div className={styles.detailButton}>
         <Link to={`/${list.id}/random`}>
@@ -24,9 +26,11 @@ function RandomItemPane(props: RandomItemPaneProps) {
         </Link>
       </div>
       <div className={styles.detailButton}>
-        <Button onClick={deleteList} variant="contained">
-          Delete
-        </Button>
+        {deleteList && (
+          <Button onClick={deleteList} variant="contained">
+            Delete
+          </Button>
+        )}
       </div>
     </div>
   );
