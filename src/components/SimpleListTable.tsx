@@ -73,7 +73,7 @@ export default function SimpleListTable() {
       .delete(`/lists/${listId}`)
       .then(() => {
         setLists((prevState) => prevState.filter((item) => item.id !== listId));
-        snackbar.addError('Successfully Deleted List');
+        snackbar.addSuccess('Successfully Deleted List');
       })
       .catch((err) => {
         snackbar.addError(`Error Deleting List: ${err.message}`);

@@ -58,7 +58,7 @@ export default function CreateListDialog(props: CreateListDialogProps) {
       .post<List>('/lists', createdList)
       .then(({ data }) => {
         history.push(`/user/${data.id}/edit`);
-        snackbar.addSuccess('Updated List Successfully');
+        snackbar.addSuccess('Created List Successfully');
       })
       .catch((err) => {
         snackbar.addError(`Error Creating List: ${err.message}`);
