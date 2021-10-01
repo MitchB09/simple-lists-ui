@@ -41,8 +41,6 @@ const SnackbarProvider = ({ children }: SnackbarProps) => {
   };
 
   const addSnackbarMessage = (content: SnackbarMessage): void => {
-    console.dir(content);
-    console.dir(snackbarMessages);
     setSnackbarMessages((_snackbarMessages) => [content, ..._snackbarMessages]);
   };
 

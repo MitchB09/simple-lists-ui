@@ -72,6 +72,17 @@ const ListEditPage = (props: ListEditProps) => {
       });
   };
 
+  const unpublishList = () => {
+    api
+      .delete<List>(`/public/lists/${list.id}`)
+      .then(() => {
+        snackbar.addSuccess('Successfully Unpublished List');
+      })
+      .catch((err) => {
+        snackbar.addError(`Error unpublishing List: ${err.message}`);
+      });
+  };
+
   const cssStyle = {
     minWidth: '16em',
     marginBottom: '1em',
@@ -147,19 +158,32 @@ const ListEditPage = (props: ListEditProps) => {
                 Update
               </Button>
             </Grid>
-            {list.id && (
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  style={{ ...cssStyle, marginBottom: '0.5em' }}
-                  onClick={() => {
-                    publishList();
-                  }}
-                >
-                  Publish
-                </Button>
-              </Grid>
-            )}
+            {list.id &&
+              (list.publicId ? (
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    style={{ ...cssStyle, marginBottom: '0.5em' }}
+                    onClick={() => {
+                      unpublishList();
+                    }}
+                  >
+                    Unpublish
+                  </Button>
+                </Grid>
+              ) : (
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    style={{ ...cssStyle, marginBottom: '0.5em' }}
+                    onClick={() => {
+                      publishList();
+                    }}
+                  >
+                    Publish
+                  </Button>
+                </Grid>
+              ))}
             <Grid item>
               <Button
                 component={Link}

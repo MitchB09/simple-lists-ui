@@ -39,8 +39,8 @@ function ListPage(props: RouteProps) {
         const { data } = response;
         setList(data);
       })
-      .catch((error) => {
-        snackbar.addError(error);
+      .catch((err) => {
+        snackbar.addError(`Error Retrieving List: ${err.message}`);
       })
       .finally(() => {
         setLoading(false);

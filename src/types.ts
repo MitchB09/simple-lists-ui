@@ -1,10 +1,11 @@
-import { Color } from '@material-ui/lab/Alert';
-
 export interface List {
   id: string;
   name: string;
   description: string;
   type: ListTypes;
+  publicId?: string;
+  publishedBy?: string;
+  publishedFrom?: string;
   items?: ListItem[];
 }
 
