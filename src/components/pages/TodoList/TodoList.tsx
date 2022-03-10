@@ -1,6 +1,6 @@
 import { TextField, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -32,24 +32,29 @@ const TodoListItem = (props: TodoItemProps) => {
 
   return (
     <>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={item.complete}
-            onClick={onClick}
-            // color="primary"
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+      <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={item.complete}
+                onClick={onClick}
+                // color="primary"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+            }
+            label={item.value}
+            className={styles.itemContainer}
+            style={item.complete ? completed : button}
           />
-        }
-        label={item.value}
-        className={styles.itemContainer}
-        style={item.complete ? completed : button}
-      />
-      {item.complete && (
-        <IconButton onClick={onDelete}>
-          <Close />
-        </IconButton>
-      )}
+        </Grid>
+        <Grid item className={styles.grow} />
+        {item.complete && (
+          <IconButton onClick={onDelete}>
+            <Close />
+          </IconButton>
+        )}
+      </Grid>
     </>
   );
 };
@@ -61,15 +66,17 @@ const TodoList = (props: ListProps) => {
   const [newItem, setNewItem] = useState<string>('');
 
   useEffect(() => {
-    setTodoList(list.items as TodoItem[]);
+    if (list.items) {
+      const items = list.items as TodoItem[];
+      setTodoList(items.filter((item) => !item.complete));
+      setCompleteList(items.filter((item) => item.complete));
+    }
   }, [list]);
 
   const createItem = () => {
     if (setNewItem) {
       const newTodo = { id: uuidv1(), value: newItem, complete: false };
       setTodoList((prevState) => [...prevState, newTodo]);
-      list.items = [...todoList, newTodo, ...completeList];
-      updateList(list);
       setNewItem('');
     }
   };
@@ -87,6 +94,17 @@ const TodoList = (props: ListProps) => {
   const deleteItem = (deletedItem: TodoItem) => {
     if (deletedItem) {
       setTodoList((prevState) => prevState.filter((item) => item.id !== deletedItem.id));
+      setCompleteList((prevState) => prevState.filter((item) => item.id !== deletedItem.id));
+    }
+  };
+
+  const updateTodoList = () => {
+    try {
+      list.items = [...todoList, ...completeList];
+      updateList(list);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.dir(err);
     }
   };
 
@@ -95,30 +113,57 @@ const TodoList = (props: ListProps) => {
       <Grid container direction="column" justify="center" alignItems="center">
         <Paper
           color="primary"
-          style={{ minWidth: '50vw', backgroundColor: '#303030', margin: '1em' }}
+          style={{ minWidth: '30vw', padding: '1em', backgroundColor: '#303030', margin: '1em' }}
         >
           <Typography variant="h6">{list?.name}</Typography>
           <Grid item>
-            <span style={{ padding: '1em' }}>
-              <TextField
-                value={newItem}
-                onChange={(e) => {
-                  setNewItem(e.target.value);
-                }}
-                label="new item"
-                style={{ minWidth: '20em' }}
-              />
-              <IconButton
-                onClick={() => {
-                  createItem();
-                }}
-                color="inherit"
-              >
-                <Add />
-              </IconButton>
-            </span>
+            <form
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+                createItem();
+              }}
+            >
+              <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item>
+                  <TextField
+                    value={newItem}
+                    onChange={(e) => {
+                      setNewItem(e.target.value);
+                    }}
+                    label="new item"
+                    style={{ minWidth: '20em' }}
+                  />
+                </Grid>
+                <Grid item className={styles.grow} />
+                <Grid item>
+                  <IconButton
+                    onClick={() => {
+                      createItem();
+                    }}
+                    color="inherit"
+                  >
+                    <Add />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </form>
           </Grid>
-          {todoList.map((item) => (
+          {todoList &&
+            todoList.map((item) => (
+              <Grid item>
+                <TodoListItem
+                  key={item.id}
+                  item={item}
+                  onClick={() => {
+                    toggleComplete(item);
+                  }}
+                  onDelete={() => {
+                    deleteItem(item);
+                  }}
+                />
+              </Grid>
+            ))}
+          {completeList.map((item) => (
             <Grid item>
               <TodoListItem
                 key={item.id}
@@ -132,21 +177,18 @@ const TodoList = (props: ListProps) => {
               />
             </Grid>
           ))}
-          <Divider />
-          {completeList.map((item) => (
-            <Grid item>
-              <TodoListItem
-                key={item.id}
-                item={item}
-                onClick={() => {
-                  toggleComplete(item);
-                }}
-                onDelete={() => {
-                  // console.dir(item);
-                }}
-              />
-            </Grid>
-          ))}
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ minWidth: '16em', marginBottom: '1em' }}
+              onClick={() => {
+                updateTodoList();
+              }}
+            >
+              Update
+            </Button>
+          </Grid>
         </Paper>
       </Grid>
     </Paper>

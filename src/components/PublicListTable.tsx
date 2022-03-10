@@ -4,25 +4,20 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Box from '@material-ui/core/Box';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
 import SimpleListDetails from './panes/SimpleListDetails';
 import { List } from '../types';
 import api from '../api';
-import CreateListDialog from './CreateListDialog';
-import { useSnackbar } from '../snackbar/hooks';
 
 interface RowProps {
   list: List;
   expanded: boolean;
   setExpanded: () => void;
-  deleteList: () => void;
 }
 
 function Row(props: RowProps) {
-  const { list, expanded, setExpanded, deleteList } = props;
+  const { list, expanded, setExpanded } = props;
 
   const onChange = () => {
     setExpanded();
@@ -43,21 +38,19 @@ function Row(props: RowProps) {
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <SimpleListDetails list={list} deleteList={deleteList} />
+        <SimpleListDetails list={list} publicList />
       </AccordionDetails>
     </Accordion>
   );
 }
 
-export default function SimpleListTable() {
+export default function PublicListTable() {
   const [lists, setLists] = useState<List[]>([]);
   const [expanded, setExpanded] = useState<string>('');
-  const [createNew, setCreateNew] = useState<boolean>(false);
-  const snackbar = useSnackbar();
 
   useEffect(() => {
     api
-      .get<List[]>('/lists')
+      .get<List[]>('/public/lists')
       .then((response) => {
         setLists(response.data);
       })
@@ -67,18 +60,6 @@ export default function SimpleListTable() {
       });
     return () => {};
   }, []);
-
-  const deleteList = (listId: string) => {
-    api
-      .delete(`/lists/${listId}`)
-      .then(() => {
-        setLists((prevState) => prevState.filter((item) => item.id !== listId));
-        snackbar.addSuccess('Successfully Deleted List');
-      })
-      .catch((err) => {
-        snackbar.addError(`Error Deleting List: ${err.message}`);
-      });
-  };
 
   const handleChange = (list: string) => {
     setExpanded(list === expanded ? '' : list);
@@ -93,19 +74,9 @@ export default function SimpleListTable() {
             list={row}
             expanded={expanded === row.id}
             setExpanded={() => handleChange(row.id)}
-            deleteList={() => deleteList(row.id)}
           />
         ))}
       </Paper>
-      <Fab
-        color="primary"
-        aria-label="add"
-        style={{ position: 'fixed', bottom: '16px', right: '16px' }}
-        onClick={() => setCreateNew(true)}
-      >
-        <AddIcon />
-      </Fab>
-      <CreateListDialog open={createNew} onClose={() => setCreateNew(false)} />
     </>
   );
 }

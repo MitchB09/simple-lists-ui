@@ -3,6 +3,9 @@ export interface List {
   name: string;
   description: string;
   type: ListTypes;
+  publicId?: string;
+  publishedBy?: string;
+  publishedFrom?: string;
   items?: ListItem[];
 }
 

@@ -7,29 +7,34 @@ import api from '../../api';
 import { List, ListTypes } from '../../types';
 import RandomItem from './RandomItem/RandomItem';
 import TimedTodo from './TimedTodo/TimedTodo';
+import { useSnackbar } from '../../snackbar/hooks';
 
 interface RouteInfo {
   id: string;
 }
 
-function ListPage() {
+interface RandomPageProps  {
+  publicList?: boolean;
+}
+
+function RandomPage(props: RandomPageProps) {
+  const { publicList } = props;
   const { id } = useParams<RouteInfo>();
+  const snackbar = useSnackbar();
   const [list, setList] = useState<List>();
 
   useEffect(() => {
     api
-      .get<List>(`/lists/${id}`)
+      .get<List>(publicList ? `public/lists/${id}` : `/lists/${id}`)
       .then((response) => {
         const { data } = response;
         setList(data);
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Retrieving List: ${err.message}`);
       });
     return () => {};
-  }, [id]);
+  }, [publicList, id, snackbar]);
   if (!list) {
     return <>loading...</>;
   }
@@ -51,4 +56,4 @@ function ListPage() {
   }
 }
 
-export default ListPage;
+export default RandomPage;

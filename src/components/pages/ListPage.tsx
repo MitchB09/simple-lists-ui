@@ -8,9 +8,15 @@ import { List, ListTypes } from '../../types';
 import TodoList from './TodoList/TodoList';
 import TimedTodo from './TimedTodo/TimedTodo';
 import ListEditPage from './ListEditPage/ListEditPage';
+import { useSnackbar } from '../../snackbar/hooks';
 
 interface RouteInfo {
   id: string;
+}
+
+interface RouteProps {
+  editMode?: boolean;
+  publicList?: boolean;
 }
 
 export interface ListPageProps {
@@ -18,60 +24,67 @@ export interface ListPageProps {
   updateList: () => void;
 }
 
-function ListPage(editMode?: boolean) {
+function ListPage(props: RouteProps) {
+  const { editMode, publicList } = props;
   const { id } = useParams<RouteInfo>();
+  const [loading, setLoading] = useState(true);
   const [list, setList] = useState<List>();
   const [editing, setEditing] = useState<boolean>(!!editMode);
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     api
-      .get<List>(`/lists/${id}`)
+      .get<List>(publicList ? `public/lists/${id}` : `/lists/${id}`)
       .then((response) => {
         const { data } = response;
         setList(data);
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Retrieving List: ${err.message}`);
+      })
+      .finally(() => {
+        setLoading(false);
       });
     return () => {};
-  }, [id]);
+  }, [id, publicList, snackbar]);
 
   const updateList = (updatedList: List) => {
     if (updatedList.id) {
+      setLoading(true);
       api
         .put<List>(`/lists/${id}`, updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          snackbar.addSuccess('Updated List Successfully');
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+        .catch((err) => {
+          snackbar.addError(`Error Updating List: ${err.message}`);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
+      setLoading(true);
       api
         .post<List>('/lists', updatedList)
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.dir(response);
-          // TODO snackbar
+        .then(() => {
+          snackbar.addSuccess('Created List Successfully');
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.dir(error);
-          // TODO snackbar
+        .catch((err) => {
+          snackbar.addError(`Error Creating List: ${err.message}`);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
 
-  if (!list) {
+  if (loading) {
     // eslint-disable-next-line no-console
     console.dir(setEditing);
     return <>loading...</>;
+  }
+  if (!list) {
+    return <>Not Found!</>;
   }
   if (editing) {
     return (

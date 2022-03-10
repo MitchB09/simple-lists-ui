@@ -1,23 +1,30 @@
-import { TextField, Paper, Button, Grid } from '@material-ui/core';
+import {
+  TextField,
+  Paper,
+  Button,
+  Grid,
+} from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSignIn } from '../../auth/hooks';
 import { SignInInput } from '../../auth/types';
+import { useSnackbar } from '../../snackbar/hooks';
 
 function LoginPage() {
   const signIn = useSignIn();
   const history = useHistory();
+  const snackbar = useSnackbar();
   const [signInInput, setSignInInput] = useState<SignInInput>({ email: '', password: '' });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await signIn({ email: signInInput.email, password: signInInput.password });
-      history.push('/');
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.dir(err);
-    }
+    signIn({ email: signInInput.email, password: signInInput.password })
+      .then(() => {
+        history.push('/');
+      })
+      .catch((err) => {
+        snackbar.addError(err.message);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -13,6 +13,7 @@ import {
 
 import { List, ListTypes } from '../types';
 import api from '../api';
+import { useSnackbar } from '../snackbar/hooks';
 
 interface CreateListDialogProps {
   open: boolean;
@@ -23,6 +24,7 @@ export default function CreateListDialog(props: CreateListDialogProps) {
   const { open, onClose } = props;
   const [list, setList] = useState<List>({} as List);
   const history = useHistory();
+  const snackbar = useSnackbar();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,12 +57,11 @@ export default function CreateListDialog(props: CreateListDialogProps) {
     api
       .post<List>('/lists', createdList)
       .then(({ data }) => {
-        history.push(`/${data.id}/edit`);
+        history.push(`/user/${data.id}/edit`);
+        snackbar.addSuccess('Created List Successfully');
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.dir(error);
-        // TODO snackbar
+      .catch((err) => {
+        snackbar.addError(`Error Creating List: ${err.message}`);
       });
   };
 
