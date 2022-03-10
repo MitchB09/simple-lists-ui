@@ -194,17 +194,6 @@ const ListEditPage = (props: ListEditProps) => {
                 Cancel
               </Button>
             </Grid>
-            <Grid item>
-              <Button
-                variant="outlined"
-                style={{ ...cssStyle, marginBottom: '0.5em' }}
-                onClick={() => {
-                  snackbar.addSuccess(`Snackbar test: ${new Date().getMilliseconds()}`);
-                }}
-              >
-                Snackbar Test
-              </Button>
-            </Grid>
           </Paper>
         </form>
       </Grid>
