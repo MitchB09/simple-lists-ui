@@ -35,8 +35,15 @@ export function useAuth() {
   }, [setUser]);
 
   const signIn = React.useCallback(
-    async ({ email, password }: SignInInput) => {
-      setUser(await Auth.signIn(email, password));
+    async ({ username, password }: SignInInput) => {
+      setUser(await Auth.signIn(username, password));
+    },
+    [setUser],
+  );
+
+  const signUp = React.useCallback(
+    async ({ username, password }: SignUpInput) => {
+      setUser(await (await Auth.signUp(username, password)).user);
     },
     [setUser],
   );
@@ -64,7 +71,7 @@ export function useAuth() {
     });
   }, [user, setUser]);
 
-  return { user, signIn, signOut, updateUser, deleteUser };
+  return { user, signIn, signUp, signOut, updateUser, deleteUser };
 }
 
 export function useUser() {
@@ -94,33 +101,27 @@ export function useUpdateUser() {
   return React.useContext(AuthContext).updateUser;
 }
 
-export function useSignUp() {
-  return async function signUp({ name, email, password }: SignUpInput) {
-    await Auth.signUp({ username: email, password, attributes: { name, email } });
-  };
-}
-
 export function useConfirmSignUp() {
-  return async function confirmSignUp({ email, code }: ConfirmSignUpInput) {
-    await Auth.confirmSignUp(email, code);
+  return async function confirmSignUp({ username, code }: ConfirmSignUpInput) {
+    await Auth.confirmSignUp(username, code);
   };
 }
 
 export function useResendSignUp() {
-  return async function resendSignUp({ email }: ResendSignUpInput) {
-    await Auth.resendSignUp(email);
+  return async function resendSignUp({ username }: ResendSignUpInput) {
+    await Auth.resendSignUp(username);
   };
 }
 
 export function useForgotPassword() {
-  return async function forgotPassword({ email }: ForgotPasswordInput) {
-    await Auth.forgotPassword(email);
+  return async function forgotPassword({ username }: ForgotPasswordInput) {
+    await Auth.forgotPassword(username);
   };
 }
 
 export function useResetPassword() {
-  return async function resetPassword({ email, code, password }: ResetPasswordInput) {
-    await Auth.forgotPasswordSubmit(email, code, password);
+  return async function resetPassword({ username, code, password }: ResetPasswordInput) {
+    await Auth.forgotPasswordSubmit(username, code, password);
   };
 }
 

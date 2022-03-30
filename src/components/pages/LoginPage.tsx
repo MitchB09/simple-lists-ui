@@ -1,24 +1,20 @@
-import {
-  TextField,
-  Paper,
-  Button,
-  Grid,
-} from '@material-ui/core';
+import { TextField, Paper, Button, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSignIn } from '../../auth/hooks';
+import { useAuth } from '../../auth/hooks';
 import { SignInInput } from '../../auth/types';
 import { useSnackbar } from '../../snackbar/hooks';
 
 function LoginPage() {
-  const signIn = useSignIn();
+  const auth = useAuth();
   const history = useHistory();
   const snackbar = useSnackbar();
-  const [signInInput, setSignInInput] = useState<SignInInput>({ email: '', password: '' });
+  const [signInInput, setSignInInput] = useState<SignInInput>({ username: '', password: '' });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signIn({ email: signInInput.email, password: signInInput.password })
+    auth
+      .signIn({ username: signInInput.username, password: signInInput.password })
       .then(() => {
         history.push('/');
       })
@@ -33,6 +29,17 @@ function LoginPage() {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const startSignUp = () => {
+    auth
+      .signUp({ username: signInInput.username, password: signInInput.password })
+      .then(() => {
+        history.push('/');
+      })
+      .catch((err) => {
+        snackbar.addError(err.message);
+      });
   };
 
   const cssStyle = {
@@ -51,9 +58,9 @@ function LoginPage() {
             <Grid item>
               <TextField
                 required
-                name="email"
-                label="Email"
-                value={signInInput?.email ? signInInput.email : ''}
+                name="username"
+                label="Username"
+                value={signInInput?.username ? signInInput.username : ''}
                 onChange={handleChange}
                 style={{ ...cssStyle }}
                 variant="outlined"
@@ -79,7 +86,17 @@ function LoginPage() {
                 color="primary"
                 style={{ ...cssStyle, marginBottom: '0.5em' }}
               >
-                Submit
+                Sign In
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ ...cssStyle, marginBottom: '0.5em' }}
+                onClick={startSignUp}
+              >
+                Sign Up
               </Button>
             </Grid>
             <Grid item>
