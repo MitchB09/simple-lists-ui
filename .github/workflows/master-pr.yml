@@ -5,8 +5,8 @@ env:
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push for the master branch
-  push:
+  # Triggers the workflow on pull request events for the master branch
+  pull_request:
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -14,7 +14,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-and-deploy:
+  build:
     name: Build and Deploy
     runs-on: ubuntu-latest
     environment: simple-lists.bilensky.ca
@@ -31,18 +31,3 @@ jobs:
       run: |
         npm install
         npm run build
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-    
-    - name: Sync build output with bucket
-      run: |
-        aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET }}
-    
-    - name: Invalidate cache
-      run: 
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
