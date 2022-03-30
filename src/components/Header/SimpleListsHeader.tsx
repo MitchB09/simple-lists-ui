@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -57,12 +57,17 @@ export default function PrimarySearchAppBar(props: any) {
   const { darkState, handleThemeChange } = props;
   const classes = useStyles();
   const user = useUser();
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [loggedInUser, setLoggedInUser] = useState<null | any>(user);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
+
+  useEffect(() => {
+    setLoggedInUser(user);
+  }, [user]);
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -79,7 +84,7 @@ export default function PrimarySearchAppBar(props: any) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {user ? (
+      {loggedInUser ? (
         <MenuItem onClick={handleMobileMenuClose} component={Link} to="/profile">
           <IconButton color="inherit">
             <AccountCircle />
@@ -135,7 +140,7 @@ export default function PrimarySearchAppBar(props: any) {
           >
             Simple Lists
           </Typography>
-          {user && (
+          {loggedInUser && (
             <Typography
               component={Link}
               to="/user"
@@ -151,7 +156,7 @@ export default function PrimarySearchAppBar(props: any) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Switch checked={darkState} onChange={handleThemeChange} />
-            {user ? (
+            {loggedInUser ? (
               <IconButton edge="end" color="inherit" component={Link} to="/profile">
                 <AccountCircle />
               </IconButton>

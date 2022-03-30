@@ -13,9 +13,9 @@ import AuthProvider from './auth/provider';
 Amplify.configure({
   Auth: {
     mandatorySignIn: true,
-    region: 'us-east-1',
-    userPoolId: 'us-east-1_y7ud5CKe2',
-    userPoolWebClientId: 'm8pj9ja8hia97beh85rh6mofn',
+    region: process.env.REACT_APP_REGION,
+    userPoolId: process.env.REACT_APP_COGNITO_USER_POOL,
+    userPoolWebClientId: process.env.REACT_APP_COGNITO_CLIENT_ID,
   },
 });
 

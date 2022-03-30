@@ -1,10 +1,10 @@
 export type SignInInput = {
-  email: string;
+  username: string;
   password: string;
 };
 export type SignUpInput = {
-  name: string;
-  email: string;
+  name?: string;
+  username: string;
   password: string;
 };
 
@@ -14,17 +14,17 @@ export interface ProfileAttributes {
   family_name?: string;
 }
 export type ConfirmSignUpInput = {
-  email: string;
+  username: string;
   code: string;
 };
 export type ResendSignUpInput = {
-  email: string;
+  username: string;
 };
 export type ForgotPasswordInput = {
-  email: string;
+  username: string;
 };
 export type ResetPasswordInput = {
-  email: string;
+  username: string;
   code: string;
   password: string;
 };
